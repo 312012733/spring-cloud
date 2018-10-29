@@ -1,0 +1,30 @@
+spring:
+  jackson:
+    serialization:
+      indent-output: true
+  servlet:
+    multipart:
+      location: E:\upload     
+     
+      
+mybatis:
+  mapper-locations:
+  - classpath:mapper1/*.xml
+  - classpath:mapper2/*.xml
+  configuration:
+    cache-enabled: true
+    
+service:
+  database: test
+  upload-dir: F:\upload1
+  c3p0:
+    jdbcUrl: jdbc:mysql://192.168.3.207:3306/${service.database}
+#    jdbcUrl: jdbc:mysql://127.0.0.1:3306/${service.database}
+    driverClass: com.mysql.jdbc.Driver
+    user: root
+    password: root
+    minPoolSize: 20
+    maxPoolSize: 30
+    
+debug: 
+  false

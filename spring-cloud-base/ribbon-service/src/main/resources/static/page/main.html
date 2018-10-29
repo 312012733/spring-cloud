@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="/test/lib/jquery-1.6.1.js"></script>
+<script type="text/javascript" src="/test/js/common/myUtils.js"></script>
+<link href="" rel="stylesheet">
+<script type="text/javascript">
+	
+	$(function(){
+		findStudents(0);
+	});
+	
+	
+	function findStudents(curPage_ , condition){
+		
+		var data = {
+				"curPage":curPage_,
+				"pageSize":$("#page_size").val()
+			};
+	
+		if(condition){
+			// 添加 查询条件 的属性
+			data["name"] = condition.stuName;
+			data["age"] = condition.stuAge;
+			if ( condition.stuGender ){//struts2 认为 非true 就是 false。 所以 没有参数就不下发。
+				data["gender"] = condition.stuGender;
+			}
+			
+		}
+		
+// 		alert(JSON.stringify(data));
+		
+		$.ajax({
+			"url":"/test/student/page",//发送请求的地址。（请求路径 按规范用 绝对路径）
+			"data":data,//请求到服务器的参数。支持json。也可以是这样 key1=value&key2=value。（注:json最终也会被jquery转换成 键值对形式）
+			"contentType":"application/x-www-form-urlencoded",//数据提交类型。默认是：application/x-www-form-urlencoded
+			"type":"get",//请求的http method的类型 默认是：“get”
+			"success":function(result){
+				
+				//清理列表，删除旧的数据
+				$("#studentList tr:gt(0)").remove();
+				
+				//更新分页信息
+				curPage = result.curPage;
+				
+				$("#cur_page").html(result.curPage + 1);
+				$("#page_size").val(result.pageSize);
+				$("#max_page").html(result.totalPage);
+				$("#max_element_count").html(result.totalCount);
+				$("#cur_element_count").html(result.curCount);
+				
+				//更新 上一页 下一页 按钮 状态
+				$("#pre_page").prop("disabled","");
+				$("#next_page").prop("disabled","");
+				
+				if(result.isFirst == true){
+					$("#pre_page").prop("disabled","disabled");
+				}
+				
+				if(result.isLast == true){
+					$("#next_page").prop("disabled","disabled");
+				}
+				
+				//更新列表，添加新的数据
+				$(result.content).each(function(i){
+					
+					var className = this.myClass?this.myClass.name:"--";
+					var gender = this.gender==true?"女":"男";
+					var idCardNum = this.studentIdCard?this.studentIdCard.num:"--";
+					
+					var tr = "<tr id='stu_"+this.id+"'><td><input type='checkBox' name='stuCheckBox' stuId='"+this.id+"'/><td>"+this.name+"</td><td>"+this.age+"</td><td>"+gender+"</td><td>"+className+"</td><td>"+idCardNum+"</td>"
+					+"<td><a href='#' onclick='bindStuIdCard(\""+this.id+"\")'>绑定</a> <a href='#' onclick='unBindStuIdCard(\""+this.id+"\")'>解除绑定</a> <a href='#' onclick='forwardUpdateStudent(\""+this.id+"\")'>修改</a> <a href='#' onclick='forwardFindStudent(\""+this.id+"\")'>查看</a> <a href='#' onclick='delStudent(\""+this.id+"\")'>删除</a></td></tr>";
+					$("#studentList").append(tr);
+					
+				});
+				
+			},//响应成功后的 回调。
+			"error":function(xmlHttpRequest){
+				
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+	
+	function delStudent(id){
+		$.ajax({
+			"url":"/test/"+id+"/student",
+			"type":"delete",			
+			"contentType":"application/json",
+			"success":function(result){
+// 				$("#stu_"+id).remove();
+	
+				findStudents(0);
+
+				alert("删除成功");
+			},
+			"error":function(xmlHttpRequest){
+				
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+	
+	function batDelStudent(){
+		
+		var stuIds = [];
+		
+		$("input[name='stuCheckBox']:checked").each(function(){
+			
+			var stuId = $(this).attr("stuId");//attr:获取或设置自定义的属性        prop:获取或设置本身就有的属性
+			stuIds.push(stuId);
+		});
+		
+		if( stuIds.length <= 0 ){
+			return;
+		}
+		
+		$.ajax({
+			"url":"/test/students",
+			"data":JSON.stringify(stuIds),
+			"type":"delete",
+			"contentType":"application/json",
+			"success":function(result){
+// 				$(stuIds).each(function(){
+// 					$("#stu_"+this).remove();
+// 				});
+				
+				findStudents(0);
+				
+				$("#chooseStus").prop("checked",false);
+				
+				alert("删除成功");
+			},
+			"error":function(xmlHttpRequest){
+				
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+	
+	function bindStuIdCard(stuId){
+		
+		
+		$.ajax({
+			"url":"/test/idCard/"+stuId+"/binding",
+			"success":function(result){
+				alert("绑定成功");
+				findStudents(0);
+			},
+			"error":function(xmlHttpRequest){
+				
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+
+	}
+	
+	function unBindStuIdCard(stuId){
+		
+		$.ajax({
+			"url":"/test/idCard/"+stuId+"/unBinding",
+			"data":{"id":stuId},
+			"success":function(result){
+				alert("绑定成功");
+				findStudents(0);
+			},
+			"error":function(xmlHttpRequest){
+				
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+
+	}
+	
+	function chooseStus(){
+		var checked = $("#chooseStus").prop("checked");
+		$("input[name='stuCheckBox']").prop("checked",checked);
+	}
+	
+	function pre(){
+		findStudents(--curPage , condition);
+	}
+	
+	function next(){
+		
+		var temp = ++curPage;
+// 		alert("next: "+temp);
+		findStudents( temp, condition);
+	}
+	
+	function go(){
+		findStudents($("#input_page").val() - 1 , condition);
+	}
+	
+	function executQuery(){
+		
+		findStudents(0 , buildQueryCondition());
+	}
+	
+	function buildQueryCondition(){
+		 condition = {
+				"stuName":$("#stuNameParam").val(),		
+				"stuAge":$("#stuAgeParam").val(),		
+				"stuGender":$("#stuGenderParam").val()	
+			};
+		
+		return condition;
+	}
+
+</script>
+
+</head>
+<body>
+	姓名：<input type="text" id="stuNameParam"   value=""/>
+	年龄：<input type="text" id="stuAgeParam"   value=""/>
+	性别：<select id="stuGenderParam" >
+			<option value="" >--请选择--</option >
+			<option value="false" >男</option >
+			<option value="true" >女</option >
+		</select>
+		
+	<button  onclick="executQuery()">查询</button>
+	
+	<br> <br>
+	
+	<button  onclick="batDelStudent()">批量删除</button>
+	<button  onclick="forwardAddStudent()">添加</button>
+	<button  onclick="forwardUpload()">上传文件</button>
+	<button  onclick="forwardRole()">添加role</button>
+	
+	<br>
+		
+	<table id="studentList" border="1">
+		<tr>
+			<td><input id="chooseStus" type="checkBox" onclick="chooseStus()"/></td><td>名称</td><td>年龄</td><td>性别</td><td>班级</td><td>学生证号</td><td>操作</td>
+		</tr>
+	</table>
+	
+	<input type="button" id="pre_page"   onclick="pre()" value="上一页"/>
+	<input type="button" id="next_page"  onclick="next()" value="下一页"/>
+	跳转第 <input type="text" id="input_page"  value=""/>页
+	<a href="#" onclick="go()">go</a>
+	<p>当前是第<span id="cur_page">1</span>页</p>
+	<p>一共有<span id="max_page">0</span>页</p>
+	<p>一共有<span id="max_element_count">0</span>条数据</p>
+	<p>每页显示<input id="page_size" value="5"/>条数据</p>
+	<p>当前页有<span id="cur_element_count">0</span>条数据</p>
+	
+</body>
+</html>

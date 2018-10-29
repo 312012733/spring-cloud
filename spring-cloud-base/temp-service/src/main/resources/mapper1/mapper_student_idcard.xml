@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dao.IStudentIdCardDao">
+
+	<!-- <cache readOnly="false" eviction="LRU" size="1024" flushInterval="60000" 
+		></cache> -->
+	<resultMap type="com.bean.StudentIdCard" id="resultMap_simple_student_idcard">
+		<id column="pk_student_idcard_id" property="id" />
+		<result column="student_num" property="num" />
+	</resultMap>
+	
+	
+	<resultMap type="com.bean.StudentIdCard" id="resultMap_student_idcard" extends="resultMap_simple_student_idcard">
+		
+		<association property="student" resultMap="stuSimpleResultMap"></association>
+	</resultMap>
+	
+	
+
+	<select id="findIdCardByStuId" resultMap="resultMap_student_idcard">
+		select * from t_student_idcard i
+			LEFT JOIN t_student s on s.fk_id_card = i.pk_student_idcard_id
+		where
+		s.pk_student_id = #{param1}
+	</select>
+
+
+	<insert id="save">
+		insert into t_student_idcard (pk_student_idcard_id , student_num )
+		values (
+		#{id},
+		#{num})
+	</insert>
+
+	<update id="update">
+		update t_student_idcard set 
+		student_num = #{num}
+		where
+		pk_student_idcard_id = #{id}
+	</update>
+
+	<delete id="delete">
+		delete t from t_student_idcard t where
+		t.pk_student_idcard_id =
+		#{param1}
+	</delete>
+
+	<delete id="batDelete">
+		delete t from t_student_idcard t where t.pk_student_idcard_id in
+
+		<foreach collection="array" open="(" close=")" separator=","
+			item="id9527">
+			#{id9527}
+		</foreach>
+	</delete>
+
+</mapper> 

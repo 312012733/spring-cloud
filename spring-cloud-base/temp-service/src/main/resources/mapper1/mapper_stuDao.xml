@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.IStudentDao">
+
+
+	<resultMap type="com.bean.Student" id="stuSimpleResultMap">
+		<id property="id" column="pk_student_id" />
+		<result property="name" column="student_name" />
+		<result property="age" column="age" />
+		<result property="gender" column="gender" />
+		<result property="createTime" column="create_time" />
+		<result property="lastModifyTime" column="last_modify_time" />
+	</resultMap>
+
+	<resultMap type="com.bean.Student" id="stuResultMap" extends="stuSimpleResultMap">
+		<association property="studentIdCard"
+			resultMap="com.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
+		<association property="myClass"
+			resultMap="com.dao.IMyClassDao.resultMap_simple_class"></association>
+		<collection property="teachers" resultMap="com.dao.ITeacherDao.teacherSimpleResultMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.bean.Student" id="stuExcluTeacherResultMap" extends="stuSimpleResultMap">
+		<association property="studentIdCard"
+			resultMap="com.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
+		<association property="myClass"
+			resultMap="com.dao.IMyClassDao.resultMap_simple_class"></association>
+	</resultMap>
+
+
+	<select id="findStudentById" resultMap="stuResultMap">
+		select * from t_student s
+		LEFT JOIN t_student_idcard i on s.fk_id_card = i.pk_student_idcard_id
+		LEFT JOIN t_class b ON s.fk_class_id = b.pk_class_id
+		LEFT JOIN t_student_teacher st on s.pk_student_id = st.pk_student_id
+		LEFT JOIN t_teacher t ON st.pk_teacher_id = t.pk_teacher_id
+		where
+		s.pk_student_id = #{param1} order by t.teacher_name asc
+	</select>
+
+	<select id="findStudentsByPage" resultMap="stuResultMap">
+		select * from t_student s
+		LEFT JOIN t_student_idcard i on s.fk_id_card = i.pk_student_idcard_id
+		LEFT JOIN t_class b ON s.fk_class_id = b.pk_class_id
+<!-- 		LEFT JOIN t_student_teacher st on s.pk_student_id = st.pk_student_id -->
+<!-- 		LEFT JOIN t_teacher t ON st.pk_teacher_id = t.pk_teacher_id -->
+		where 1 =1
+
+		<if test="param2 != null">
+
+			<if test="param2.name != null and param2.name.length() > 0">
+				and s.student_name like '%' #{param2.name} '%'
+			</if>
+
+			<if test="param2.age != null">
+				and s.age = #{param2.age}
+			</if>
+
+			<if test="param2.gender != null">
+				and s.gender = #{param2.gender}
+			</if>
+		</if>
+
+		order by s.create_time desc limit #{param1.offset} , #{param1.pageSize}
+	</select>
+
+	<select id="queryCount" resultType="Long">
+		SELECT count(*) from t_student s where 1 = 1
+
+
+		<if test="name != null and name.length() > 0">
+			and s.student_name like '%' #{name} '%'
+		</if>
+
+		<if test="age != null">
+			and s.age = #{age}
+		</if>
+
+		<if test="gender != null">
+			and s.gender = #{gender}
+		</if>
+
+	</select>
+
+	<insert id="addStudent">
+		INSERT INTO t_student
+		(pk_student_id, student_name, age,gender, fk_class_id, create_time, last_modify_time)
+		values
+		(#{id},
+		#{name}, #{age}, #{gender}, #{myClass.id}, #{createTime}, #{lastModifyTime} )
+	</insert>
+
+	<update id="updateStudent">
+		update t_student s set
+		s.age = #{age} ,
+		s.student_name = #{name} ,
+		s.last_modify_time = #{lastModifyTime},
+		s.fk_id_card = #{studentIdCard.id} ,
+		s.fk_class_id = #{myClass.id}
+		where
+		s.pk_student_id = #{id}
+	</update>
+
+	<delete id="delStudent">
+		delete s from t_student s where s.pk_student_id =
+		#{param1}
+	</delete>
+
+
+	<delete id="batchDelStudent">
+		delete s from t_student s where s.pk_student_id in
+		<!-- (id1,di2) Object stuId = ary[i] -->
+
+		<foreach collection="array" open="(" close=")" item="stuId"
+			separator=",">
+			#{stuId}
+		</foreach>
+
+	</delete>
+
+
+</mapper>

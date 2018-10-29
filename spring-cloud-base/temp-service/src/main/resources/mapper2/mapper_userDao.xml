@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao2.IUserDao">
+
+	<resultMap type="com.bean.User" id="userResultMap">
+		<id property="id" column="pk_id" />
+		<result property="username" column="user_name" />
+		<result property="password" column="password" />
+	</resultMap>
+
+	<select id="findUserByUsernameAndPassword" resultMap="userResultMap">
+		SELECT *
+		from t_user u where 1 = 1 and u.user_name = #{param1} and u.password =
+		#{param2}
+	</select>
+
+</mapper>

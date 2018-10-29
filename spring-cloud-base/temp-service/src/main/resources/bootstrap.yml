@@ -1,0 +1,47 @@
+#server config
+server: 
+  port: 1001
+  servlet:
+    context-path: /temp
+    
+##spring config
+spring: 
+  application:
+    name: temp-service
+#  profiles: 
+#    active: dev
+  cloud:
+    config: 
+#      profile: dev
+      discovery:
+        enabled: true
+        service-id: config-service
+#      uri: http://localhost:2001/config
+
+#eureka config
+eureka:
+  instance:
+    lease-expiration-duration-in-seconds: 15
+    lease-renewal-interval-in-seconds: 5
+    preferIpAddress: true  #true -> display ip address ; false -> display server name
+    hostname: localhost
+    appname: ${spring.application.name}
+    virtual-host-name: ${spring.application.name}
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port}
+
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    region: default
+    eureka-service-url-poll-interval-seconds: 60
+    registryFetchIntervalSeconds: 5  
+    availabilityZones:
+      default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
+    serviceUrl:
+      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
+#      defaultZone: http://172.16.4.247:8761/eureka/,http://172.16.4.250:8761/eureka/
+
+
+    
+

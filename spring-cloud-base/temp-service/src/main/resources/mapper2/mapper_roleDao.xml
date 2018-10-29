@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao2.IRoleDao">
+
+	<resultMap type="com.bean.Role" id="roleResultMap">
+		<id property="id" column="pk_role_id" />
+		<result property="name" column="role_name" />
+		<result property="head" column="role_head" jdbcType="BLOB"/>
+	</resultMap>
+
+	<select id="findRoleById" resultMap="roleResultMap">
+		SELECT * from t_role r where 1 = 1 and r.pk_role_id = #{param2}
+	</select>
+
+	<insert id="save">
+		insert into t_role (pk_role_id , role_name , role_head)
+		values (
+		#{id} , #{name} , #{head})
+	</insert>
+	
+</mapper>

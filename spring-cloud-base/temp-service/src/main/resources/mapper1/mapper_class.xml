@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dao.IMyClassDao">
+
+	<resultMap type="com.bean.MyClass" id="resultMap_simple_class">
+		<id column="pk_class_id" property="id" />
+		<result column="class_name" property="name" />
+	</resultMap>
+
+	<resultMap type="com.bean.MyClass" id="resultMap_class" extends="resultMap_simple_class">
+		<collection property="students"  resultMap="com.dao.IStudentDao.stuSimpleResultMap" ></collection>
+	</resultMap>
+
+
+<!-- 	<select id="findMyClassById" resultMap="resultMap_class"> -->
+<!-- 		select * from t_class b -->
+<!-- 		where 1 = 1 and b.pk_class_id = #{param2} and b.class_name = #{param1} -->
+<!-- 	</select> -->
+	
+	<select id="findMyClasses" resultMap="resultMap_class">
+		select * from t_class b
+		LEFT JOIN t_student s ON b.pk_class_id = s.fk_class_id
+		where 1 = 1 order by class_name desc
+	</select>
+
+</mapper> 

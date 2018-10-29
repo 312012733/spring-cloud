@@ -1,0 +1,18 @@
+zuul: 
+  routes:
+    feign:
+      path: /feign/**
+      service-id: feign-service
+    ribbon:
+      path: /ribbon/**
+      service-id: ribbon-service
+    hystrix:
+      path: /hystrix/**
+      service-id: hystrix-service
+    temp:
+      path: /temp/**
+      service-id: temp-service
+      
+  
+debug: 
+  false
