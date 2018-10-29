@@ -20,7 +20,7 @@ spring:
           searchPaths: config
           username: 
           password: 
-          basedir: F:\\temp\\config
+          basedir: F:\\temp\\config-center
 
 
 #eureka config
