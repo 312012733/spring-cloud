@@ -11,6 +11,6 @@ import com.vo.Page;
 @FeignClient(name = "temp-service")
 public interface FeignApi
 {
-    @RequestMapping(value = "/temp/student/page", method = RequestMethod.GET)
+    @RequestMapping(value = "/test/student/page", method = RequestMethod.GET)
     Page<Student> findByPage(@RequestParam("curPage") int curPage);
 }

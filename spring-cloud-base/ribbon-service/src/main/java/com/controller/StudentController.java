@@ -45,7 +45,7 @@ public class StudentController
         
         try
         {
-            String url = "http://temp-service/temp/student/page?" + request.getQueryString();
+            String url = "http://temp-service/test/student/page?" + request.getQueryString();
             // Map<String, Object> param = new HashMap<>();
             // param.put("curPage", page.getCurPage());
             // param.put("pageSize", page.getPageSize());

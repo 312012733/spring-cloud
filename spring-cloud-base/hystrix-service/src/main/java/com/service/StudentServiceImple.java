@@ -32,7 +32,7 @@ public class StudentServiceImple implements IStudentService
     @Override
     public Page<Student> findStudentsByPage(Page<Student> page, Student condition)
     {
-        String url = "http://temp-service/temp/student/page?curPage= {curPage}&pageSize= {pageSize}";
+        String url = "http://temp-service/test/student/page?curPage= {curPage}&pageSize= {pageSize}";
         
         Map<String, Object> param = new HashMap<>();
         param.put("curPage", page.getCurPage());
