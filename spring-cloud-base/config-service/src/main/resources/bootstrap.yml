@@ -16,7 +16,7 @@ spring:
       label: master
       server: 
         git: 
-          uri: https://github.com/312012733/feigege.git
+          uri: https://github.com/312012733/config-center.git
           searchPaths: config-center
           username: 
           password: 
