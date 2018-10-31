@@ -22,12 +22,14 @@
 
 	<modules>
 		<module>discover-service</module>
-		<module>temp-service</module>
+		<module>config-service</module>
+		<module>zuul-service</module>
 		<module>ribbon-service</module>
 		<module>feign-service</module>
 		<module>hystrix-service</module>
-		<module>zuul-service</module>
-		<module>config-service</module>
+		<module>temp-service</module>
+		<module>kafka-consumer-service</module>
+		<module>kafka-producer-service</module>
 	</modules>
 
 	<properties>
