@@ -1,7 +1,7 @@
 <configuration>
     <!-- 日志路径 -->
     <property name="LOG_HOME" value="logs"/>
-    <property name="FILE_NAME" value="kafka-producer-service"/>
+    <property name="FILE_NAME" value="kafka-consumer-service"/>
     <!-- 控制台日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

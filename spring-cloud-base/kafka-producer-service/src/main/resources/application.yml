@@ -46,8 +46,7 @@ kafka:
     acks: 0
     partitioner: com.changhongit.tcar.kafka.MessagePartitioner
     partitions: 8
-    
-         
+        
 debug: 
   false
 
