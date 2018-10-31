@@ -20,13 +20,13 @@ import com.kafka.consumer.ControlResultConsumerThread;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class KafkaConsumerApplication
+public class KafkaProducerApplication
 {
     
     public static void main(String[] args) throws Exception
     {
         
-        ConfigurableApplicationContext context = SpringApplication.run(KafkaConsumerApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(KafkaProducerApplication.class, args);
         KafkaConsumerConfig kafkaConsumerConfig = context.getBean(ControlResultConsumer.class);
         KafkaProducerConfig kafkaProducerConfig = context.getBean(KafkaProducerConfig.class);
         AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
