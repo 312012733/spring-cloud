@@ -1,0 +1,25 @@
+{
+    "namespace": "PsgcarCarControlResultReport",
+	
+    "type": "record",
+    "name": "psgcar_control_result_report",
+    "fields": [
+        {
+            "name": "vin",
+            "type": "string"
+        },
+		{
+            "name": "uuid",
+            "type": "string"
+        },
+		{
+            "name": "result",
+            "type": "string"
+        },
+		{
+            "name": "time",
+            "type": "long"
+        }
+
+    ]
+}
