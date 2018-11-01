@@ -52,9 +52,9 @@ public class KafkaConsumerApplication
             }
             else if (topic.equals(controlReportPushSchema.getName()))
             {
-//                Runnable task = new ControlResultPushKafkaConsumerThread(topic, controlReportPushSchema,
-//                        kafkaConfig.kafkaConsumer(), context);
-//                ThreadUtils.execute(task);
+                Runnable task = new ControlResultPushKafkaConsumerThread(topic, controlReportPushSchema,
+                        kafkaConfig.kafkaConsumer(), context);
+                ThreadUtils.execute(task);
             }
             else
             {

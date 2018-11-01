@@ -27,7 +27,7 @@ public class ControlResultKafkaConsumerThread extends KafkaConsumerThread
         {
             ControlResultKafkMsg kfkMsg = msgJson.toJavaObject(ControlResultKafkMsg.class);
             
-            LOGGER.info("kfkMsg:{}", kfkMsg);
+//            LOGGER.info("kfkMsg:{}", kfkMsg);
             
             // ControlResultConsumer controlResultConsumer =
             // (ControlResultConsumer) kafkaConsumer;

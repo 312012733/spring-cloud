@@ -32,7 +32,7 @@ public class KafkaUtils
     
     public static void produce(String topic, KafkaProducer<String, byte[]> producer, byte[] value)
     {
-        producer.send(new ProducerRecord<String, byte[]>(topic, "key", value));
+        producer.send(new ProducerRecord<String, byte[]>(topic, value));
     }
     
     public static void consume(String topic, KafkaConsumer<String, byte[]> consumer, ConsumerSuccess consumerSuccess)
@@ -40,7 +40,7 @@ public class KafkaUtils
         // TopicPartition partition0 = new TopicPartition(topic, 1);
         // TopicPartition partition1 = new TopicPartition(topic, 1);
         //
-        // consumer.assign(Arrays.asList(partition0));
+        // consumer.assign(Arrays.asList(partition0, partition1));
         
         consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener()
         {
