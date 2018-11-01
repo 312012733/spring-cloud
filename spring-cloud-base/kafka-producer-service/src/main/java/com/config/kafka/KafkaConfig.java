@@ -22,7 +22,7 @@ public class KafkaConfig
     private KafkaBean kafkaBean;
     
     @Bean
-    @Scope(scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @ConditionalOnProperty(matchIfMissing = false, prefix = "kafka.consumerProperties", name =
     { "bootstrap.servers" })
     @ConditionalOnMissingBean

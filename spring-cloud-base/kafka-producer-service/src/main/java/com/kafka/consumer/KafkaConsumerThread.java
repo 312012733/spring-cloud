@@ -42,8 +42,8 @@ public abstract class KafkaConsumerThread implements Runnable
                 try
                 {
                     GenericRecord message = AvroUtil.bytesRead(record.value(), schema);
-                    LOGGER.info(this.getClass().getName() + " offset = {}, pa={}, key = {}, value = {}", record.offset(),
-                            record.partition(), record.key(), message);
+                    LOGGER.info(this.getClass().getName() + " offset = {}, pa={}, key = {}, value = {}",
+                            record.offset(), record.partition(), record.key(), message);
                     
                     JSONObject messageJson = JSONObject.parseObject(message.toString());
                     consumerService(messageJson);

@@ -9,10 +9,66 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("kafka")
 public class KafkaBean
 {
-    private List<String> topics = new ArrayList<>();
+    private List<TopicBean> topics = new ArrayList<>();
     private Properties consumerProperties = new Properties();
     private Properties producerProperties = new Properties();
     private ZookeeperBean zookeeper;
+    
+    public static class TopicBean
+    {
+        private String name;
+        private int partitions = 8;
+        private int replicationFactor = 1;
+        private Properties config = new Properties();
+        
+        public String getName()
+        {
+            return name;
+        }
+        
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+        
+        public int getPartitions()
+        {
+            return partitions;
+        }
+        
+        public void setPartitions(int partitions)
+        {
+            this.partitions = partitions;
+        }
+        
+        public int getReplicationFactor()
+        {
+            return replicationFactor;
+        }
+        
+        public void setReplicationFactor(int replicationFactor)
+        {
+            this.replicationFactor = replicationFactor;
+        }
+        
+        public Properties getConfig()
+        {
+            return config;
+        }
+        
+        public void setConfig(Properties config)
+        {
+            this.config = config;
+        }
+        
+        @Override
+        public String toString()
+        {
+            return "KafkaTopicBean [name=" + name + ", partitions=" + partitions + ", replicationFactor="
+                    + replicationFactor + ", config=" + config + "]";
+        }
+        
+    }
     
     public static class ZookeeperBean
     {
@@ -36,12 +92,12 @@ public class KafkaBean
         
     }
     
-    public List<String> getTopics()
+    public List<TopicBean> getTopics()
     {
         return topics;
     }
     
-    public void setTopics(List<String> topics)
+    public void setTopics(List<TopicBean> topics)
     {
         this.topics = topics;
     }
@@ -74,13 +130,6 @@ public class KafkaBean
     public void setZookeeper(ZookeeperBean zookeeper)
     {
         this.zookeeper = zookeeper;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "KafkaBean [topics=" + topics + ", consumerProperties=" + consumerProperties + ", producerProperties="
-                + producerProperties + ", zookeeper=" + zookeeper + "]";
     }
     
 }

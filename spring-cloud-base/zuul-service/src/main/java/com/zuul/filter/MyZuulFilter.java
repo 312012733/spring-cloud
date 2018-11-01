@@ -42,35 +42,35 @@ public class MyZuulFilter extends ZuulFilter
         
         LOG.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
         
-//        Object accessToken = request.getParameter("token");
-//        
-//        if (accessToken == null)
-//        {
-//            LOG.warn("token is empty");
-//            
-//            try
-//            {
-//                ctx.setSendZuulResponse(false);// 不需要进行路由，也就是不会调用api服务提供者
-//                ctx.setResponseStatusCode(401);
-//                ctx.set("isOK", false);// 可以把一些值放到ctx中，便于后面的filter获取使用
-//                // 返回内容给客户端
-//                // ctx.setResponseBody("{\"result\":\"token is empty\"}");//
-//                // 返回错误内容
-//                
-//                ctx.getResponse().getWriter().write("token is empty");
-//            }
-//            catch (Exception e)
-//            {
-//                e.printStackTrace();
-//            }
-//            
-//        }
-//        else
-//        {
-//            ctx.setSendZuulResponse(true);// 会进行路由，也就是会调用api服务提供者
-//            ctx.setResponseStatusCode(200);
-//            ctx.set("isOK", true);// 可以把一些值放到ctx中，便于后面的filter获取使用
-//        }
+        // Object accessToken = request.getParameter("token");
+        //
+        // if (accessToken == null)
+        // {
+        // LOG.warn("token is empty");
+        //
+        // try
+        // {
+        // ctx.setSendZuulResponse(false);// 不需要进行路由，也就是不会调用api服务提供者
+        // ctx.setResponseStatusCode(401);
+        // ctx.set("isOK", false);// 可以把一些值放到ctx中，便于后面的filter获取使用
+        // // 返回内容给客户端
+        // // ctx.setResponseBody("{\"result\":\"token is empty\"}");//
+        // // 返回错误内容
+        //
+        // ctx.getResponse().getWriter().write("token is empty");
+        // }
+        // catch (Exception e)
+        // {
+        // e.printStackTrace();
+        // }
+        //
+        // }
+        // else
+        // {
+        // ctx.setSendZuulResponse(true);// 会进行路由，也就是会调用api服务提供者
+        // ctx.setResponseStatusCode(200);
+        // ctx.set("isOK", true);// 可以把一些值放到ctx中，便于后面的filter获取使用
+        // }
         
         return null;
     }

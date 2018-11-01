@@ -6,7 +6,6 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import com.config.avro.AvroMessageConfig;
 import com.config.avro.AvroUtil;
 import com.config.kafka.KafkaBean;
+import com.config.kafka.KafkaBean.TopicBean;
 import com.config.kafka.KafkaConfig;
 import com.config.kafka.KafkaUtils;
 import com.kafka.consumer.ControlResultKafkaConsumerThread;
@@ -27,7 +27,7 @@ import com.utils.ThreadUtils;
 @SpringBootApplication
 public class KafkaProducerApplication
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger(KafkaProducerApplication.class);
+    final static Logger LOGGER = LoggerFactory.getLogger(KafkaProducerApplication.class);
     
     public static void main(String[] args) throws Exception
     {
@@ -35,19 +35,19 @@ public class KafkaProducerApplication
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
-        // KafkaConsumer<String, byte[]> kafkaConsumer =
-        // kafkaConfig.kafkaConsumer();
         
         AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
         Schema controlReportSchema = avroMessageConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroMessageConfig.getControlResultReportPushSchema();
         
-        List<String> topics = kafkaBean.getTopics();
+        List<TopicBean> topics = kafkaBean.getTopics();
         
         KafkaUtils.createTopics(topics, kafkaConfig.zkUtils());
         
-        for (String topic : topics)
+        for (TopicBean topicBean : topics)
         {
+            
+            String topic = topicBean.getName();
             
             if (topic.equals(controlReportSchema.getName()))
             {
@@ -65,50 +65,37 @@ public class KafkaProducerApplication
             {
                 throw new IllegalArgumentException("topicName and schemaName did not match up.");
             }
+            
         }
-        
         /***************************************************************/
-        KafkaProducer<String, byte[]> producer = kafkaConfig.kafkaProducer();
-        
-        GenericRecord record = new GenericData.Record(controlReportSchema);
-        record.put("vin", "vin");
-        record.put("uuid", "uuid");
-        record.put("time", System.currentTimeMillis());
-        record.put("result", "true");
-        
-        KafkaUtils.produce(controlReportSchema.getName(), producer, AvroUtil.bytesWrite(controlReportSchema, record));
+        for (int i = 0; i < 8; i++)
+        {
+            KafkaProducer<String, byte[]> producer = kafkaConfig.kafkaProducer();
+            
+            GenericRecord record = new GenericData.Record(controlReportSchema);
+            record.put("vin", "vin" + i);
+            record.put("uuid", "uuid" + i);
+            record.put("time", System.currentTimeMillis());
+            record.put("result", "true" + i);
+            
+            KafkaUtils.produce(controlReportSchema.getName(), producer,
+                    AvroUtil.bytesWrite(controlReportSchema, record));
+            
+        }
         
         System.out.println("----------controlReportSchema--------------------------------------------");
         //////////////////////////////////////////////////////////////////////////
-        record = new GenericData.Record(controlReportPushSchema);
-        record.put("vin", "vin1");
-        record.put("action", 6);
-        record.put("uuid", "uuid1");
-        record.put("result", "true");
-        record.put("time", System.currentTimeMillis());
-        
-        KafkaUtils.produce(controlReportPushSchema.getName(), producer,
-                AvroUtil.bytesWrite(controlReportPushSchema, record));
-        
-        System.out.println("----------controlReportPushSchema--------------------------------------------");
-    }
-    
-    public static void send(KafkaProducer<String, byte[]> producer, String topic, byte[] value)
-    {
-        try
-        {
-            producer.send(new ProducerRecord<String, byte[]>(topic, "hello", value));
-        }
-        catch (Exception e)
-        {
-            LOGGER.error("", e);
-            
-        }
-        finally
-        {
-            // producer.close();
-        }
-        
+        // record = new GenericData.Record(controlReportPushSchema);
+        // record.put("vin", "vin1");
+        // record.put("action", 6);
+        // record.put("uuid", "uuid1");
+        // record.put("result", "true");
+        // record.put("time", System.currentTimeMillis());
+        //
+        // KafkaUtils.produce(controlReportPushSchema.getName(), producer,
+        // AvroUtil.bytesWrite(controlReportPushSchema, record));
+        //
+        // System.out.println("----------controlReportPushSchema--------------------------------------------");
     }
     
 }

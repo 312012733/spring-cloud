@@ -3,6 +3,8 @@ package com;
 import java.util.List;
 
 import org.apache.avro.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -21,6 +23,7 @@ import com.utils.ThreadUtils;
 @SpringBootApplication
 public class KafkaConsumerApplication
 {
+    final static Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerApplication.class);
     
     public static void main(String[] args) throws Exception
     {
@@ -28,8 +31,6 @@ public class KafkaConsumerApplication
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
-        // KafkaConsumer<String, byte[]> kafkaConsumer =
-        // kafkaConfig.kafkaConsumer();
         
         AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
         Schema controlReportSchema = avroMessageConfig.getControlResultReportSchema();
