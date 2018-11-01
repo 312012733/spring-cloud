@@ -1,5 +1,5 @@
 {
-    "namespace": "PsgcarCarControlResultReport",
+    "namespace": "psgcar_control_result_report",
 	
     "type": "record",
     "name": "psgcar_control_result_report",
