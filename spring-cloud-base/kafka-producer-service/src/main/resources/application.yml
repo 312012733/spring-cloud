@@ -8,33 +8,27 @@ spring:
      
 #kafka config
 kafka: 
-  consumer: 
-    group: ${spring.application.name}
-    interval: 1000
-    offsetReset: smallest
-    zookeeper:
+  zookeeper:
       connect: ${service.kafka.zookeeper.connect}
-      connectTimeOut: 15000
-      sessionTimeout: 15000
-      synctime: 200
-    topics: 
-      - name: psgcar_param_result_report
-        partitions: 8
-        replicationFactor: 1
-
-        
-  producer:
-    broker:
-      connect: ${service.kafka.broker.connect}
-    zookeeper:
-      connect: ${service.kafka.zookeeper.connect}
-      connectTimeOut: 15000
-      sessionTimeout: 15000
-      synctime: 200
-    serializer: kafka.serializer.DefaultEncoder
-    acks: 0
-    partitioner: com.config.kafka.MessagePartitioner
-    partitions: 8
+  topics: 
+    - psgcar_control_result_report
+  consumerProperties: 
+    bootstrap.servers: ${service.kafka.broker.connect}
+    group.id: ${spring.application.name}
+    enable.auto.commit: true
+    auto.offset.reset: latest #latest, earliest, none
+    auto.commit.interval.ms: 1000    
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer       
+  producerProperties: 
+    bootstrap.servers: ${service.kafka.broker.connect}
+    acks: all
+    retries: 0
+    batch.size: 16384
+    linger.ms: 1
+    buffer.memory: 33554432
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.ByteArraySerializer
         
 debug: 
   false

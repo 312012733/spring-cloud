@@ -13,7 +13,7 @@ kafka:
   topics: 
     - psgcar_control_result_report
   consumerProperties: 
-    bootstrap.servers: 172.16.5.220:9092
+    bootstrap.servers: ${service.kafka.broker.connect}
     group.id: ${spring.application.name}
     enable.auto.commit: true
     auto.offset.reset: latest #latest, earliest, none
@@ -21,7 +21,7 @@ kafka:
     key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer       
   producerProperties: 
-    bootstrap.servers: 172.16.5.220:9092
+    bootstrap.servers: ${service.kafka.broker.connect}
     acks: all
     retries: 0
     batch.size: 16384
