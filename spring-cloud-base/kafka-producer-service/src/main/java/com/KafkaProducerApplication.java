@@ -79,14 +79,14 @@ public class KafkaProducerApplication
         
         //////////////////////////////////////////////////////////////////////////
         record = new GenericData.Record(controlReportPushSchema);
-        record.put("vin", "vin");
-        record.put("uuid", "uuid");
-        record.put("time", System.currentTimeMillis());
+        record.put("vin", "vin1");
         record.put("action", 6);
+        record.put("uuid", "uuid1");
         record.put("result", "true");
+        record.put("time", System.currentTimeMillis());
         
         KafkaUtils.produce(controlReportPushSchema.getName(), producer,
-                AvroUtil.bytesWrite(controlReportSchema, record));
+                AvroUtil.bytesWrite(controlReportPushSchema, record));
     }
     
     public static void send(KafkaProducer<String, byte[]> producer, String topic, byte[] value)

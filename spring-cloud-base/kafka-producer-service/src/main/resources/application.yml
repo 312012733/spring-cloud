@@ -12,6 +12,7 @@ kafka:
       connect: ${service.kafka.zookeeper.connect}
   topics: 
     - psgcar_control_result_report
+    - psgcar_control_result_report_push
   consumerProperties: 
     bootstrap.servers: ${service.kafka.broker.connect}
     group.id: ${spring.application.name}
