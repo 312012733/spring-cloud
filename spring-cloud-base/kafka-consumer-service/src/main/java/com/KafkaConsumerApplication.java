@@ -19,9 +19,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import com.config.avro.AvroMessageConfig;
 import com.config.avro.AvroUtil;
-import com.config.kafka.consumer.KafkaConsumerConfig;
-import com.config.kafka.producer.KafkaProducerConfig;
-import com.kafka.consumer.ControlResultConsumer;
 
 @EnableEurekaClient
 @SpringBootApplication
@@ -33,12 +30,14 @@ public class KafkaConsumerApplication
         
         ConfigurableApplicationContext context = SpringApplication.run(KafkaConsumerApplication.class, args);
         
-        KafkaConsumerConfig kafkaConsumerConfig = context.getBean(ControlResultConsumer.class);
-        KafkaProducerConfig kafkaProducerConfig = context.getBean(KafkaProducerConfig.class);
+        // KafkaConsumerConfig kafkaConsumerConfig =
+        // context.getBean(ControlResultConsumer.class);
+        // KafkaProducerConfig kafkaProducerConfig =
+        // context.getBean(KafkaProducerConfig.class);
         AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
         
         String topic = avroMessageConfig.getControlResultSchema().getNamespace();
-        consumer(topic ,avroMessageConfig.getControlResultSchema());
+        consumer(topic, avroMessageConfig.getControlResultSchema());
         //
         // List<KafkaTopicBean> consumerTopics =
         // kafkaConsumerConfig.getKafkaConsumerBean().getTopics();
@@ -87,10 +86,11 @@ public class KafkaConsumerApplication
     public static void consumer(String topic, Schema schema) throws IOException
     {
         Properties properties = new Properties();
-//        properties.put("bootstrap.servers","192.168.3.62:9092");
-        properties.put("bootstrap.servers","172.16.5.220:9092");
+        // properties.put("bootstrap.servers","192.168.3.62:9092");
+        properties.put("bootstrap.servers", "172.16.5.220:9092");
         properties.put("group.id", "test");
         properties.put("enable.auto.commit", "true");
+        properties.put("auto.offset.reset", "latest");// latest, earliest, none
         properties.put("auto.commit.interval.ms", "1000");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
@@ -100,22 +100,25 @@ public class KafkaConsumerApplication
         {
             public void onPartitionsRevoked(Collection<TopicPartition> collection)
             {
+                
             }
             
             public void onPartitionsAssigned(Collection<TopicPartition> collection)
             {
-                // 将偏移设置到最开始
-                consumer.seekToBeginning(collection);
+                // // 将偏移设置到最开始
+                // consumer.seekToBeginning(collection);
             }
         });
         
         while (true)
         {
             ConsumerRecords<String, byte[]> records = consumer.poll(100);
-
-            for (ConsumerRecord<String, byte[]> record : records) {
+            
+            for (ConsumerRecord<String, byte[]> record : records)
+            {
                 
-                GenericRecord message = AvroUtil.bytesRead(record.value(), schema);;
+                GenericRecord message = AvroUtil.bytesRead(record.value(), schema);
+                
                 System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), message);
             }
         }

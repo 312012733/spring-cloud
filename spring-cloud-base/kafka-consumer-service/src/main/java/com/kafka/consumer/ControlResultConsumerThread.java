@@ -1,25 +1,19 @@
 package com.kafka.consumer;
 
 import org.apache.avro.Schema;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.config.avro.AvroMessageConfig;
-import com.config.kafka.consumer.KafkaConsumerConfig;
-import com.config.kafka.consumer.KafkaConsumerThread;
-import com.config.kafka.producer.KafkaProducerConfig;
-
-import kafka.consumer.KafkaStream;
 
 public class ControlResultConsumerThread extends KafkaConsumerThread
 {
     private final static Logger LOGGER = LoggerFactory.getLogger(ControlResultConsumerThread.class);
     
-    public ControlResultConsumerThread(KafkaStream<byte[], byte[]> stream, Schema schema, AvroMessageConfig avroMessage,
-            KafkaConsumerConfig kafkaConsumer, KafkaProducerConfig kafkaProducer)
+    public ControlResultConsumerThread(String topic, Schema schema, KafkaConsumer<String, byte[]> consumer)
     {
-        super(stream, schema, avroMessage, kafkaConsumer, kafkaProducer);
+        super(topic, schema, consumer);
     }
     
     @Override
@@ -29,8 +23,7 @@ public class ControlResultConsumerThread extends KafkaConsumerThread
         
         try
         {
-            ControlResultKafkMsg kfkMsg = (ControlResultKafkMsg) JSONObject.toJavaObject(msgJson,
-                    ControlResultKafkMsg.class);
+            ControlResultKafkMsg kfkMsg = msgJson.toJavaObject(ControlResultKafkMsg.class);
             
             LOGGER.info("kfkMsg:{}", kfkMsg);
             
