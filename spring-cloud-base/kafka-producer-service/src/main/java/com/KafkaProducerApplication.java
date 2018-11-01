@@ -91,7 +91,7 @@ public class KafkaProducerApplication
         // params.add(param);
         // }
         //
-        // kafkaConsumerConfig.executor(params);
+         kafkaConsumerConfig.executor(params);
         
     }
     

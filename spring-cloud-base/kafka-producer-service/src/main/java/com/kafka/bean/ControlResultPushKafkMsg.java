@@ -1,13 +1,14 @@
-package com.kafka.consumer;
+package com.kafka.bean;
 
-public class ControlResultKafkMsg
+public class ControlResultPushKafkMsg
 {
     private String vin;
     private String uuid;
     private String result;
+    private Integer action;
     private Long time;
     
-    public ControlResultKafkMsg()
+    public ControlResultPushKafkMsg()
     {
     }
     
@@ -51,10 +52,21 @@ public class ControlResultKafkMsg
         this.time = time;
     }
     
+    public Integer getAction()
+    {
+        return action;
+    }
+    
+    public void setAction(Integer action)
+    {
+        this.action = action;
+    }
+    
     @Override
     public String toString()
     {
-        return "ControlResultKafkMsg [vin=" + vin + ", uuid=" + uuid + ", result=" + result + ", time=" + time + "]";
+        return "ControlResultPushKafkMsg [vin=" + vin + ", uuid=" + uuid + ", result=" + result + ", action=" + action
+                + ", time=" + time + "]";
     }
     
 }
