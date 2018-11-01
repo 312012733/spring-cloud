@@ -4,26 +4,27 @@ import org.apache.avro.Schema;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kafka.bean.ControlResultPushKafkMsg;
 
-public class ControlResultConsumerThread extends KafkaConsumerThread
+public class ControlResultPushKafkaConsumerThread extends KafkaConsumerThread
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ControlResultConsumerThread.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ControlResultPushKafkaConsumerThread.class);
     
-    public ControlResultConsumerThread(String topic, Schema schema, KafkaConsumer<String, byte[]> consumer)
+    public ControlResultPushKafkaConsumerThread(String topic, Schema schema, KafkaConsumer<String, byte[]> consumer,
+            ApplicationContext context)
     {
-        super(topic, schema, consumer);
+        super(topic, schema, consumer, context);
     }
     
     @Override
     public void consumerService(JSONObject msgJson)
     {
-        LOGGER.info("controlRecord save start. ");
-        
         try
         {
-            ControlResultKafkMsg kfkMsg = msgJson.toJavaObject(ControlResultKafkMsg.class);
+            ControlResultPushKafkMsg kfkMsg = msgJson.toJavaObject(ControlResultPushKafkMsg.class);
             
             LOGGER.info("kfkMsg:{}", kfkMsg);
             
@@ -33,11 +34,10 @@ public class ControlResultConsumerThread extends KafkaConsumerThread
             // 保存车控结果
             // controlResultConsumer.getControlRecordService().saveControlResult(kfkMsg);
             
-            LOGGER.info("controlRecord save end. \n");
         }
         catch (Exception e)
         {
-            LOGGER.error("save controlRecord error. msgJson:{} \n", msgJson, e);
+            LOGGER.error("ControlResultPushKafkaConsumerThread error. msgJson:{} \n", msgJson, e);
         }
     }
 }

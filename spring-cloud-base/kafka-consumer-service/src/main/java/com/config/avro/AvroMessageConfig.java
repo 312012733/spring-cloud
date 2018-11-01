@@ -16,25 +16,22 @@ public class AvroMessageConfig
     // private ResourceLoader resourceLoader;
     
     @Value("classpath:/schema/psgcar_control_result_report.avsc")
-    private Resource controlResultResource;
+    private Resource controlResultReport;
     
-    // @Autowired
-    // private AvroBean avroBean;
+    @Value("classpath:/schema/psgcar_control_result_report_push.avsc")
+    private Resource controlResultReportPush;
     
-    // @Autowired
-    // JGitRepository jGitRepository;
-    //
-    // @Bean
-    // public Schema getControlResultSchema()
-    // {
-    // return new
-    // Schema.Parser().parse(jGitRepository.findOne(avroBean.getCreateControlResultAvsc(),
-    // "master"));
-    // }
     @Bean
-    public Schema getControlResultSchema() throws IOException
+    public Schema getControlResultReportSchema() throws IOException
     {
-        String schema = new String(IOUtils.toByteArray(controlResultResource.getInputStream()), "utf-8");
+        String schema = new String(IOUtils.toByteArray(controlResultReport.getInputStream()), "utf-8");
+        return new Schema.Parser().parse(schema);
+    }
+    
+    @Bean
+    public Schema getControlResultReportPushSchema() throws IOException
+    {
+        String schema = new String(IOUtils.toByteArray(controlResultReportPush.getInputStream()), "utf-8");
         return new Schema.Parser().parse(schema);
     }
     
