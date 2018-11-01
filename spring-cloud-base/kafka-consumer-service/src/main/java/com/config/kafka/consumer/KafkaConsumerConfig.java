@@ -93,4 +93,9 @@ public class KafkaConsumerConfig
         }
         
     }
+
+    public String getZookeeperConn()
+    {
+        return kafkaConsumerBean.getZookeeper().getConnect();
+    }
 }

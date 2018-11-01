@@ -15,7 +15,7 @@ public class AvroMessageConfig
 {
     // private ResourceLoader resourceLoader;
     
-    @Value("classpath:psgcar_control_result_report.avsc")
+    @Value("classpath:/schema/psgcar_control_result_report.avsc")
     private Resource controlResultResource;
     
     // @Autowired

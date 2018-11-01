@@ -18,19 +18,7 @@ kafka:
       sessionTimeout: 15000
       synctime: 200
     topics:
-      - name: psgcar_param_modify_result_report
-        partitions: 8
-        replicationFactor: 1
-      - name: psgcar_param_result_report
-        partitions: 8
-        replicationFactor: 1
       - name: psgcar_control_result_report
-        partitions: 8
-        replicationFactor: 1
-      - name: psgcar_powerlevel_report
-        partitions: 8
-        replicationFactor: 1
-      - name: psgcar_fencesetting_result_report
         partitions: 8
         replicationFactor: 1
         
@@ -44,7 +32,7 @@ kafka:
       synctime: 200
     serializer: kafka.serializer.DefaultEncoder
     acks: 0
-    partitioner: com.changhongit.tcar.kafka.MessagePartitioner
+    partitioner: com.config.kafka.MessagePartitioner
     partitions: 8
         
 debug: 

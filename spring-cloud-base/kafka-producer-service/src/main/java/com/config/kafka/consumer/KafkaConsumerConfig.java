@@ -28,7 +28,7 @@ public class KafkaConsumerConfig
     private final static Logger logger = LoggerFactory.getLogger(KafkaConsumerConfig.class);
     
     @Autowired
-    KafkaConsumerBean kafkaConsumerBean;
+    private KafkaConsumerBean kafkaConsumerBean;
     
     @Bean
     public ConsumerConfig getConsumerConfig()

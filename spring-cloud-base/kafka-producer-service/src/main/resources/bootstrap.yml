@@ -1,13 +1,13 @@
 #server config
 server:
-  port: 8002
+  port: 8001
   servlet:
     context-path: /kafka-consumer
     
 ##spring config
 spring: 
   application: 
-    name: kafka-consumer-service
+    name: kafka-producer-service
 #  profiles: 
 #    active: dev
   cloud:
@@ -39,8 +39,8 @@ eureka:
     availabilityZones:
       default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
     serviceUrl:
-      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
-#      defaultZone: http://172.16.4.247:8761/eureka/,http://172.16.4.250:8761/eureka/
+#      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
 
 service:
   cassandra:
@@ -48,10 +48,13 @@ service:
     port: 9042
     keyspace: tcar_psgcar_control
   kafka: 
+#    broker:
+#      connect: 192.168.3.62:9092
+#    zookeeper:
+#      connect: 192.168.3.62:2181
     broker:
-      connect: 127.0.0.1:9092
+      connect: 172.16.5.220:9092
     zookeeper:
-      connect: 127.0.0.1:2181
-    
+      connect: 172.16.5.220:2181
 
         

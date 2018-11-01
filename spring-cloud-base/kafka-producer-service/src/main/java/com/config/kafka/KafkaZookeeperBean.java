@@ -2,7 +2,7 @@ package com.config.kafka;
 
 public class KafkaZookeeperBean
 {
-    private String connect = "172.28.24.50:2181,172.28.24.49:2181,172.28.24.48:2181";
+    private String connect = "127.0.0.1:2181";
     
     private String connectTimeOut = "15000";
     
