@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -32,12 +31,12 @@ public class KafkaProducerApplication
     
     public static void main(String[] args) throws Exception
     {
-        
         ConfigurableApplicationContext context = SpringApplication.run(KafkaProducerApplication.class, args);
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
-        KafkaConsumer<String, byte[]> kafkaConsumer = kafkaConfig.kafkaConsumer();
+        // KafkaConsumer<String, byte[]> kafkaConsumer =
+        // kafkaConfig.kafkaConsumer();
         
         AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
         Schema controlReportSchema = avroMessageConfig.getControlResultReportSchema();
@@ -45,19 +44,21 @@ public class KafkaProducerApplication
         
         List<String> topics = kafkaBean.getTopics();
         
+        KafkaUtils.createTopics(topics, kafkaConfig.zkUtils());
+        
         for (String topic : topics)
         {
             
             if (topic.equals(controlReportSchema.getName()))
             {
-                Runnable task = new ControlResultKafkaConsumerThread(topic, controlReportSchema, kafkaConsumer,
-                        context);
+                Runnable task = new ControlResultKafkaConsumerThread(topic, controlReportSchema,
+                        kafkaConfig.kafkaConsumer(), context);
                 ThreadUtils.execute(task);
             }
             else if (topic.equals(controlReportPushSchema.getName()))
             {
-                Runnable task = new ControlResultPushKafkaConsumerThread(topic, controlReportPushSchema, kafkaConsumer,
-                        context);
+                Runnable task = new ControlResultPushKafkaConsumerThread(topic, controlReportPushSchema,
+                        kafkaConfig.kafkaConsumer(), context);
                 ThreadUtils.execute(task);
             }
             else
@@ -77,6 +78,7 @@ public class KafkaProducerApplication
         
         KafkaUtils.produce(controlReportSchema.getName(), producer, AvroUtil.bytesWrite(controlReportSchema, record));
         
+        System.out.println("----------controlReportSchema--------------------------------------------");
         //////////////////////////////////////////////////////////////////////////
         record = new GenericData.Record(controlReportPushSchema);
         record.put("vin", "vin1");
@@ -87,6 +89,8 @@ public class KafkaProducerApplication
         
         KafkaUtils.produce(controlReportPushSchema.getName(), producer,
                 AvroUtil.bytesWrite(controlReportPushSchema, record));
+        
+        System.out.println("----------controlReportPushSchema--------------------------------------------");
     }
     
     public static void send(KafkaProducer<String, byte[]> producer, String topic, byte[] value)

@@ -33,8 +33,7 @@ public class KafkaUtils
         producer.send(new ProducerRecord<String, byte[]>(topic, "hello", value));
     }
     
-    public static void consume(String topic, KafkaConsumer<String, byte[]> consumer,
-            ConsumerSuccess consumerSuccess)
+    public static void consume(String topic, KafkaConsumer<String, byte[]> consumer, ConsumerSuccess consumerSuccess)
     {
         consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener()
         {
@@ -45,7 +44,7 @@ public class KafkaUtils
             
             public void onPartitionsAssigned(Collection<TopicPartition> collection)
             {
-                // // 将偏移设置到最开始
+                // 将偏移设置到最开始
                 // consumer.seekToBeginning(collection);
             }
         });
@@ -57,7 +56,7 @@ public class KafkaUtils
             for (ConsumerRecord<String, byte[]> record : records)
             {
                 consumerSuccess.onSuccess(record);
-        
+                
             }
         }
     }
