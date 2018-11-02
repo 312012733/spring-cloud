@@ -35,13 +35,27 @@ public class KafkaUtils
         producer.send(new ProducerRecord<String, byte[]>(topic, value));
     }
     
+    public static void consume(String topic, Integer partition, KafkaConsumer<String, byte[]> consumer,
+            ConsumerSuccess consumerSuccess)
+    {
+        TopicPartition topicPartition = new TopicPartition(topic, partition);
+        
+        consumer.assign(Arrays.asList(topicPartition));
+        
+        while (true)
+        {
+            ConsumerRecords<String, byte[]> records = consumer.poll(1000);
+            
+            for (ConsumerRecord<String, byte[]> record : records)
+            {
+                consumerSuccess.onSuccess(record);
+                
+            }
+        }
+    }
+    
     public static void consume(String topic, KafkaConsumer<String, byte[]> consumer, ConsumerSuccess consumerSuccess)
     {
-        // TopicPartition partition0 = new TopicPartition(topic, 1);
-        // TopicPartition partition1 = new TopicPartition(topic, 1);
-        //
-        // consumer.assign(Arrays.asList(partition0, partition1));
-        
         consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener()
         {
             public void onPartitionsRevoked(Collection<TopicPartition> collection)
@@ -58,7 +72,7 @@ public class KafkaUtils
         
         while (true)
         {
-            ConsumerRecords<String, byte[]> records = consumer.poll(100);
+            ConsumerRecords<String, byte[]> records = consumer.poll(1000);
             
             for (ConsumerRecord<String, byte[]> record : records)
             {

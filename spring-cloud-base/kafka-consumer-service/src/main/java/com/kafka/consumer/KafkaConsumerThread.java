@@ -17,23 +17,25 @@ public abstract class KafkaConsumerThread implements Runnable
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerThread.class);
     private String topic;
+    private Integer partition;
     private final Schema schema;
     private KafkaConsumer<String, byte[]> consumer;
     protected ApplicationContext context;
     
-    public KafkaConsumerThread(String topic, Schema schema, KafkaConsumer<String, byte[]> consumer,
+    public KafkaConsumerThread(String topic, Integer partition, Schema schema, KafkaConsumer<String, byte[]> consumer,
             ApplicationContext context)
     {
         this.schema = schema;
         this.topic = topic;
         this.consumer = consumer;
+        this.partition = partition;
         this.context = context;
     }
     
     @Override
     public void run()
     {
-        KafkaUtils.consume(topic, consumer, new ConsumerSuccess()
+        KafkaUtils.consume(topic, partition, consumer, new ConsumerSuccess()
         {
             
             @Override

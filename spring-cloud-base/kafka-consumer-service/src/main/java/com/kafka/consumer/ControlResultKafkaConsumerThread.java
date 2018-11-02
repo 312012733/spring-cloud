@@ -13,10 +13,10 @@ public class ControlResultKafkaConsumerThread extends KafkaConsumerThread
 {
     private final static Logger LOGGER = LoggerFactory.getLogger(ControlResultKafkaConsumerThread.class);
     
-    public ControlResultKafkaConsumerThread(String topic, Schema schema, KafkaConsumer<String, byte[]> consumer,
-            ApplicationContext context)
+    public ControlResultKafkaConsumerThread(String topic, Integer partition, Schema schema,
+            KafkaConsumer<String, byte[]> consumer, ApplicationContext context)
     {
-        super(topic, schema, consumer, context);
+        super(topic, partition, schema, consumer, context);
     }
     
     @Override
