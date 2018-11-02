@@ -12,13 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.config.avro.AvroMessageConfig;
-import com.config.kafka.KafkaBean;
-import com.config.kafka.KafkaBean.TopicBean;
-import com.config.kafka.KafkaConfig;
-import com.config.kafka.KafkaUtils;
-import com.kafka.consumer.ControlResultKafkaConsumerThread;
-import com.kafka.consumer.ControlResultPushKafkaConsumerThread;
+import com.avro.config.AvroMessageConfig;
+import com.consumer.ControlResultKafkaConsumerThread;
+import com.consumer.ControlResultPushKafkaConsumerThread;
+import com.kafka.config.KafkaBean;
+import com.kafka.config.KafkaBean.TopicBean;
+import com.kafka.config.KafkaConfig;
+import com.kafka.utils.KafkaUtils;
 import com.utils.ThreadUtils;
 
 @EnableEurekaClient
