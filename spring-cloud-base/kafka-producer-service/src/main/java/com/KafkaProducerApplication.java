@@ -108,7 +108,7 @@ public class KafkaProducerApplication
                     {
                         GenericRecord record = new GenericData.Record(controlReportSchema);
                         record.put("vin", "vin" + index);
-                        record.put("uuid", "uuid" + index);
+                        record.put("uuid", "飞哥哥" + index);
                         record.put("time", System.currentTimeMillis() + index);
                         record.put("result", "true" + index);
                         
