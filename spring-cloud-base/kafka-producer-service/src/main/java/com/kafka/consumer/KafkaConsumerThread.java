@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.alibaba.fastjson.JSONObject;
-import com.config.avro.AvroUtil;
-import com.config.kafka.KafkaUtils;
-import com.config.kafka.KafkaUtils.ConsumerSuccess;
+import com.avro.utils.AvroUtil;
+import com.kafka.utils.KafkaUtils;
+import com.kafka.utils.KafkaUtils.ConsumerSuccess;
 
 public abstract class KafkaConsumerThread implements Runnable
 {
@@ -35,9 +35,8 @@ public abstract class KafkaConsumerThread implements Runnable
     @Override
     public void run()
     {
-        KafkaUtils.consume(topic, partition, consumer, new ConsumerSuccess()
+        ConsumerSuccess consumerSuccess = new ConsumerSuccess()
         {
-            
             @Override
             public void onSuccess(ConsumerRecord<String, byte[]> record)
             {
@@ -57,7 +56,9 @@ public abstract class KafkaConsumerThread implements Runnable
                     LOGGER.error("", e);
                 }
             }
-        });
+        };
+        
+        KafkaUtils.consume(topic, partition, consumer, consumerSuccess);
         
     }
     
