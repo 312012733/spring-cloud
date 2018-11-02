@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.avro.config.AvroMessageConfig;
+import com.avro.config.AvroConfig;
 import com.consumer.ControlResultKafkaConsumerThread;
 import com.consumer.ControlResultPushKafkaConsumerThread;
 import com.kafka.config.KafkaBean;
@@ -34,7 +34,7 @@ public class KafkaConsumerApplication
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         
-        AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
+        AvroConfig avroMessageConfig = context.getBean(AvroConfig.class);
         Schema controlReportSchema = avroMessageConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroMessageConfig.getControlResultReportPushSchema();
         
@@ -75,6 +75,8 @@ public class KafkaConsumerApplication
                 throw new IllegalArgumentException("topicName and schemaName did not match up.");
             }
         }
+        
+        /****************************************************/
         
     }
     

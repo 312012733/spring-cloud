@@ -56,6 +56,8 @@ service:
       connect: 172.16.5.220:9092
     zookeeper:
       connect: 172.16.5.220:2181
-    
-
-        
+  git: 
+    uri: https://github.com/312012733/config-center.git
+    basedir: F:\temp\local-config-center
+    username: 
+    password: 
