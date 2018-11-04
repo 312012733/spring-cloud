@@ -39,7 +39,7 @@ public class KafkaProducerApplication
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         
-        AvroMessageConfig avroMessageConfig = context.getBean(AvroMessageConfig.class);
+        AvroConfig avroMessageConfig = context.getBean(AvroConfig.class);
         Schema controlReportSchema = avroMessageConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroMessageConfig.getControlResultReportPushSchema();
         
