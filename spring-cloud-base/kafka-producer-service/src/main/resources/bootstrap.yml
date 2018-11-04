@@ -48,14 +48,18 @@ service:
     port: 9042
     keyspace: tcar_psgcar_control
   kafka: 
-#    broker:
-#      connect: 192.168.3.62:9092
-#    zookeeper:
-#      connect: 192.168.3.62:2181
     broker:
-      connect: 172.16.5.220:9092
+      connect: 192.168.3.62:9092
     zookeeper:
-      connect: 172.16.5.220:2181
-    
+      connect: 192.168.3.62:2181
+#    broker:
+#      connect: 172.16.5.220:9092
+#    zookeeper:
+#      connect: 172.16.5.220:2181
+  git: 
+    uri: https://github.com/312012733/config-center.git
+    basedir: F:\temp\local-config-center
+    username: 
+    password:     
 
         
