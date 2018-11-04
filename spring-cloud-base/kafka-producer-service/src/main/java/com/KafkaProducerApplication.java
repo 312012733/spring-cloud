@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.avro.config.AvroMessageConfig;
+import com.avro.config.AvroConfig;
 import com.avro.utils.AvroUtil;
 import com.consumer.ControlResultKafkaConsumerThread;
 import com.consumer.ControlResultPushKafkaConsumerThread;
