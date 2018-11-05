@@ -12,6 +12,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.security.JaasUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ import kafka.utils.ZkUtils;
 
 public class KafkaUtils
 {
+    public static final int TIME_OUT = 1000;
     private static final Logger logger = LoggerFactory.getLogger(KafkaUtils.class);
     
     public static interface ConsumerSuccess
@@ -44,7 +46,7 @@ public class KafkaUtils
         
         while (true)
         {
-            ConsumerRecords<String, byte[]> records = consumer.poll(1000);
+            ConsumerRecords<String, byte[]> records = consumer.poll(TIME_OUT);
             
             for (ConsumerRecord<String, byte[]> record : records)
             {
@@ -82,34 +84,10 @@ public class KafkaUtils
         }
     }
     
-    public static boolean createTopic(TopicBean topicBean, ZkUtils zkUtils)
+    public static void createTopics(List<TopicBean> topics, String zookeeperConnection)
     {
-        try
-        {
-            String topicName = topicBean.getName();
-            int partitions = topicBean.getPartitions();
-            int replicationFactor = topicBean.getReplicationFactor();
-            Properties config = topicBean.getConfig();
-            
-            AdminUtils.createTopic(zkUtils, topicName, partitions, replicationFactor, config,
-                    RackAwareMode.Enforced$.MODULE$);
-            return true;
-        }
-        catch (Exception e)
-        {
-            logger.error("", e);
-        }
+        ZkUtils zkUtils = buildZkUtils(zookeeperConnection);
         
-        return false;
-    }
-    
-    public static boolean topicExists(String topicName, ZkUtils zkUtils)
-    {
-        return AdminUtils.topicExists(zkUtils, topicName);
-    }
-    
-    public static void createTopics(List<TopicBean> topics, ZkUtils zkUtils)
-    {
         try
         {
             for (TopicBean topicBean : topics)
@@ -120,18 +98,51 @@ public class KafkaUtils
                 {
                     logger.info("topic {} 已经存在 , 不予创建", topic);
                 }
-                else
+                else if (createTopic(topicBean, zkUtils))
                 {
-                    createTopic(topicBean, zkUtils);
                     logger.info("topic {} 已创建", topic);
                 }
             }
         }
+        finally
+        {
+            if (null != zkUtils)
+            {
+                zkUtils.close();
+            }
+        }
+    }
+    
+    private static boolean createTopic(TopicBean topicBean, ZkUtils zkUtils)
+    {
+        try
+        {
+            String topicName = topicBean.getName();
+            int partitions = topicBean.getPartitions();
+            int replicationFactor = topicBean.getReplicationFactor();
+            Properties config = topicBean.getConfig();
+            
+            AdminUtils.createTopic(zkUtils, topicName, partitions, replicationFactor, config,
+                    RackAwareMode.Enforced$.MODULE$);
+            
+            return true;
+        }
         catch (Exception e)
         {
-            logger.error("创建kafka topic 失败 , 失败原因:{}", e.getMessage());
-            throw new SecurityException("创建kafka topic 失败 ", e);
+            logger.error("", e);
         }
+        
+        return false;
+    }
+    
+    private static boolean topicExists(String topicName, ZkUtils zkUtils)
+    {
+        return AdminUtils.topicExists(zkUtils, topicName);
+    }
+    
+    private static ZkUtils buildZkUtils(String zookeeperConnection)
+    {
+        return ZkUtils.apply(zookeeperConnection, 30000, 30000, JaasUtils.isZkSecurityEnabled());
     }
     
 }
