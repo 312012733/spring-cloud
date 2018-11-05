@@ -2,12 +2,12 @@
 server:
   port: 8101
   servlet:
-    context-path: /kafka-spring-producer-service
+    context-path: /kafka-spring-producer
     
 ##spring config
 spring: 
   application: 
-    name: kafka-spring-consumer-service
+    name: kafka-spring-producer-service
 #  profiles: 
 #    active: dev
   cloud:

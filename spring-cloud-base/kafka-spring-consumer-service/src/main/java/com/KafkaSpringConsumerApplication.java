@@ -23,13 +23,13 @@ import com.utils.ThreadUtils;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class KafkaConsumerApplication
+public class KafkaSpringConsumerApplication
 {
-    final static Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerApplication.class);
+    final static Logger LOGGER = LoggerFactory.getLogger(KafkaSpringConsumerApplication.class);
     
     public static void main(String[] args) throws Exception
     {
-        ConfigurableApplicationContext context = SpringApplication.run(KafkaConsumerApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(KafkaSpringConsumerApplication.class, args);
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
