@@ -22,7 +22,6 @@ public class JGitUtis implements JGitRepository
         this.jGitBean = jGitBean;
         
         init(jGitBean.getUri(), jGitBean.getBasedir());
-        
     }
     
     private void init(String uri, File baseDir) throws Exception

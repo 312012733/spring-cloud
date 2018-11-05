@@ -43,15 +43,15 @@ public class KafkaConfig
         return producer;
     }
     
-    @Bean
-    @ConditionalOnProperty(matchIfMissing = false, prefix = "kafka.zookeeper", name =
-    { "connect" })
-    @ConditionalOnMissingBean
-    public ZkUtils zkUtils()
-    {
-        String zookeeperConn = kafkaBean.getZookeeper().getConnect();
-        ZkUtils zkUtils = ZkUtils.apply(zookeeperConn, 30000, 30000, JaasUtils.isZkSecurityEnabled());
-        return zkUtils;
-    }
+//    @Bean
+//    @ConditionalOnProperty(matchIfMissing = false, prefix = "kafka.zookeeper", name =
+//    { "connect" })
+//    @ConditionalOnMissingBean
+//    public ZkUtils zkUtils()
+//    {
+//        String zookeeperConn = kafkaBean.getZookeeper().getConnect();
+//        ZkUtils zkUtils = ZkUtils.apply(zookeeperConn, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+//        return zkUtils;
+//    }
     
 }

@@ -45,7 +45,7 @@ public class KafkaProducerApplication
         
         List<TopicBean> topics = kafkaBean.getTopics();
         
-        KafkaUtils.createTopics(topics, kafkaConfig.zkUtils());
+        KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         KafkaConsumer<String, byte[]> kafkaConsumer = kafkaConfig.kafkaConsumer();
         
@@ -83,7 +83,7 @@ public class KafkaProducerApplication
         
         /********************************************************/
         
-        testSendControlReport(kafkaConfig, controlReportSchema, 8);
+        testSendControlReport(kafkaConfig, controlReportSchema, 16);
         testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
         
         Thread.sleep(1000 * 10);
