@@ -1,9 +1,13 @@
 package com;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.PartitionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +17,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.avro.config.AvroConfig;
+import com.avro.utils.AvroUtil;
 import com.consumer.ControlResultKafkaConsumerThread;
 import com.consumer.ControlResultPushKafkaConsumerThread;
 import com.kafka.config.KafkaBean;
@@ -76,8 +81,86 @@ public class KafkaSpringProducerApplication
             }
         }
         
-        /****************************************************/
+        /********************************************************/
+        
+        testSendControlReport(kafkaConfig, controlReportSchema, 8);
+        testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
+        
+        Thread.sleep(1000 * 10);
+        context.close();
+        System.exit(0);
         
     }
     
+    public static void testSendControlReport(KafkaConfig kafkaConfig, Schema controlReportSchema, int threadCount)
+            throws IOException
+    {
+        KafkaProducer<String, byte[]> producer = kafkaConfig.kafkaProducer();
+        
+        for (int i = 0; i < threadCount; i++)
+        {
+            final int index = i;
+            new Thread()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        GenericRecord record = new GenericData.Record(controlReportSchema);
+                        record.put("vin", "vin" + index);
+                        record.put("uuid", "飞哥哥" + index);
+                        record.put("time", System.currentTimeMillis() + index);
+                        record.put("result", "true" + index);
+                        
+                        KafkaUtils.produce(controlReportSchema.getName(), producer,
+                                AvroUtil.bytesWrite(controlReportSchema, record));
+                    }
+                    catch (IOException e)
+                    {
+                        LOGGER.error("", e);
+                    }
+                };
+                
+            }.start();
+        }
+        
+        LOGGER.info("-----------------testSendControlReport---------over------------");
+    }
+    
+    public static void testSendControlReportPush(KafkaConfig kafkaConfig, Schema controlReportPushSchema,
+            int threadCount) throws IOException
+    {
+        KafkaProducer<String, byte[]> producer = kafkaConfig.kafkaProducer();
+        
+        for (int i = 0; i < threadCount; i++)
+        {
+            final int index = i;
+            
+            new Thread()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        GenericRecord record = new GenericData.Record(controlReportPushSchema);
+                        record.put("vin", "vin" + index);
+                        record.put("action", 6 + index);
+                        record.put("uuid", "uuid" + index);
+                        record.put("result", "true" + index);
+                        record.put("time", System.currentTimeMillis() + index);
+                        
+                        KafkaUtils.produce(controlReportPushSchema.getName(), producer,
+                                AvroUtil.bytesWrite(controlReportPushSchema, record));
+                    }
+                    catch (IOException e)
+                    {
+                        LOGGER.error("", e);
+                    }
+                };
+                
+            }.start();
+        }
+        
+        LOGGER.info("-----------------testSendControlReport---------over------------");
+    }
 }
