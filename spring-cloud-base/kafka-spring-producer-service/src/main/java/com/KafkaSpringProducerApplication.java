@@ -26,7 +26,6 @@ public class KafkaSpringProducerApplication
 {
     final static Logger LOGGER = LoggerFactory.getLogger(KafkaSpringProducerApplication.class);
     
-    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception
     {
         ConfigurableApplicationContext context = SpringApplication.run(KafkaSpringProducerApplication.class, args);
@@ -38,6 +37,7 @@ public class KafkaSpringProducerApplication
         
         /********************************************************/
         
+        @SuppressWarnings("unchecked")
         KafkaTemplate<String, byte[]> kafkaTemplate = context.getBean(KafkaTemplate.class);
         
         AvroConfig avroeConfig = context.getBean(AvroConfig.class);
