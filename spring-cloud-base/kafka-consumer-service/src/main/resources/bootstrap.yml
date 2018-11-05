@@ -60,4 +60,6 @@ service:
     uri: https://github.com/312012733/config-center.git
     basedir: F:\temp\local-config-center
     username: 
-    password: 
+    password:     
+
+        

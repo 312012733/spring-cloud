@@ -40,7 +40,7 @@ public class KafkaConsumerApplication
         
         List<TopicBean> topics = kafkaBean.getTopics();
         
-        KafkaUtils.createTopics(topics, kafkaConfig.zkUtils());
+        KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         KafkaConsumer<String, byte[]> kafkaConsumer = kafkaConfig.kafkaConsumer();
         
