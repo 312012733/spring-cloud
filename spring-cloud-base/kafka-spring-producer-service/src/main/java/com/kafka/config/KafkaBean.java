@@ -10,8 +10,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class KafkaBean
 {
     private List<TopicBean> topics = new ArrayList<>();
+    
     private Properties consumerProperties = new Properties();
     private Properties producerProperties = new Properties();
+    
     private ZookeeperBean zookeeper;
     
     public static class TopicBean
