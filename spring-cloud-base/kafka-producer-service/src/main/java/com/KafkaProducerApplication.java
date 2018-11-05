@@ -47,33 +47,29 @@ public class KafkaProducerApplication
         
         KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
-        KafkaConsumer<String, byte[]> kafkaConsumer = kafkaConfig.kafkaConsumer();
-        
         for (TopicBean topicBean : topics)
         {
             String topic = topicBean.getName();
             
             if (topic.equals(controlReportSchema.getName()))
             {
-                List<PartitionInfo> partitions = kafkaConsumer.partitionsFor(topic);
-                
-                for (PartitionInfo partitionInfo : partitions)
+                for (int i = 0; i < topicBean.getPartitions(); i++)
                 {
-                    Runnable task = new ControlResultKafkaConsumerThread(topic, partitionInfo.partition(),
-                            controlReportSchema, kafkaConfig.kafkaConsumer(), context);
+                    Runnable task = new ControlResultKafkaConsumerThread(topic, null, controlReportSchema,
+                            kafkaConfig.kafkaConsumer(), context);
                     ThreadUtils.execute(task);
                 }
+                
             }
             else if (topic.equals(controlReportPushSchema.getName()))
             {
-                List<PartitionInfo> partitions = kafkaConsumer.partitionsFor(topic);
-                
-                for (PartitionInfo partitionInfo : partitions)
+                for (int i = 0; i < topicBean.getPartitions(); i++)
                 {
-                    Runnable task = new ControlResultPushKafkaConsumerThread(topic, partitionInfo.partition(),
-                            controlReportPushSchema, kafkaConfig.kafkaConsumer(), context);
+                    Runnable task = new ControlResultPushKafkaConsumerThread(topic, null, controlReportPushSchema,
+                            kafkaConfig.kafkaConsumer(), context);
                     ThreadUtils.execute(task);
                 }
+                
             }
             else
             {

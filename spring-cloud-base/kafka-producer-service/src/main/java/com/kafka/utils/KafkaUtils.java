@@ -25,7 +25,7 @@ import kafka.utils.ZkUtils;
 public class KafkaUtils
 {
     private static final int TIME_OUT = 1000;
-    private static final Logger logger = LoggerFactory.getLogger(KafkaUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaUtils.class);
     
     public static interface ConsumerSuccess
     {
@@ -62,13 +62,14 @@ public class KafkaUtils
         {
             public void onPartitionsRevoked(Collection<TopicPartition> collection)
             {
-                
+                LOG.info("=================onPartitionsRevoked======{}", collection);
             }
             
             public void onPartitionsAssigned(Collection<TopicPartition> collection)
             {
                 // 将偏移设置到最开始
                 // consumer.seekToBeginning(collection);
+                LOG.info("=================onPartitionsAssigned======{}", collection);
             }
         });
         
@@ -96,11 +97,11 @@ public class KafkaUtils
                 
                 if (topicExists(topic, zkUtils))
                 {
-                    logger.info("topic {} 已经存在 , 不予创建", topic);
+                    LOG.info("topic {} 已经存在 , 不予创建", topic);
                 }
                 else if (createTopic(topicBean, zkUtils))
                 {
-                    logger.info("topic {} 已创建", topic);
+                    LOG.info("topic {} 已创建", topic);
                 }
             }
         }
@@ -129,7 +130,7 @@ public class KafkaUtils
         }
         catch (Exception e)
         {
-            logger.error("", e);
+            LOG.error("", e);
         }
         
         return false;
