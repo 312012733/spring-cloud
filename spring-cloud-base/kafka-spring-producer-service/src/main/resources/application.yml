@@ -1,0 +1,42 @@
+spring: 
+  jackson: 
+    serialization: 
+      indent-output: true
+  servlet:
+    multipart:
+      location: E:\upload
+     
+#kafka config
+kafka: 
+  zookeeper:
+      connect: ${service.kafka.zookeeper.connect}
+  topics: 
+    - name: psgcar_control_result_report
+      partitions: 8
+      replicationFactor: 1
+    - name: psgcar_control_result_report_push
+      partitions: 8
+      replicationFactor: 1
+  consumerProperties: 
+    bootstrap.servers: ${service.kafka.broker.connect}
+    group.id: ${spring.application.name}
+    enable.auto.commit: true
+    auto.offset.reset: latest #latest, earliest, none
+    auto.commit.interval.ms: 1000    
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer       
+  producerProperties: 
+    bootstrap.servers: ${service.kafka.broker.connect}
+    acks: all
+    retries: 0
+    batch.size: 16384
+    linger.ms: 1
+    buffer.memory: 33554432
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+        
+debug: 
+  false
+
+
+    

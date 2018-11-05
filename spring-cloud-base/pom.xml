@@ -30,6 +30,9 @@
 		<module>temp-service</module>
 		<module>kafka-consumer-service</module>
 		<module>kafka-producer-service</module>
+		<module>kafka-spring-consumer-service</module>
+		<module>kafka-spring-producer-service</module>
+		
 	</modules>
 
 	<properties>
