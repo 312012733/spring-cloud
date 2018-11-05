@@ -44,8 +44,8 @@ eureka:
     availabilityZones:
       default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
     serviceUrl:
-      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/,http://172.16.5.220:8761/eureka/
-#      defaultZone: http://172.16.4.247:8761/eureka/,http://172.16.4.250:8761/eureka/
+      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
+#      defaultZone: http://172.16.5.220:8761/eureka/
 
 
 
