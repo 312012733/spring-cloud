@@ -58,7 +58,14 @@ public abstract class KafkaConsumerThread implements Runnable
             }
         };
         
-        KafkaUtils.consume(topic, partition, consumer, consumerSuccess);
+        if (partition == null)
+        {
+            KafkaUtils.consume(topic, consumer, consumerSuccess);
+        }
+        else
+        {
+            KafkaUtils.consume(topic, partition, consumer, consumerSuccess);
+        }
         
     }
     

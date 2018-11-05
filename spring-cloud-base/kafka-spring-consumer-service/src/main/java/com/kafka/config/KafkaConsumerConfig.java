@@ -1,5 +1,6 @@
 package com.kafka.config;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -15,6 +16,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
+import com.kafka.config.KafkaBean.TopicBean;
 import com.kafka.utils.KafkaUtils;
 
 @Configuration
@@ -42,10 +44,26 @@ public class KafkaConsumerConfig
     {
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setConcurrency(kafkaBean.getTopics().get(0).getPartitions());
+        factory.setConcurrency(countPartitions());
         factory.getContainerProperties().setPollTimeout(KafkaUtils.TIME_OUT);
         
         return factory;
+    }
+    
+    private int countPartitions()
+    {
+        List<TopicBean> topics = kafkaBean.getTopics();
+        
+        int count = 0;
+        
+        for (TopicBean topicBean : topics)
+        {
+            int partitions = topicBean.getPartitions();
+            
+            count += partitions;
+        }
+        
+        return count;
     }
     
 }
