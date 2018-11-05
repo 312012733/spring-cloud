@@ -45,4 +45,26 @@ public class KafkaConsumerListener
             LOGGER.error("", e);
         }
     }
+    
+    @KafkaListener(topics =
+    { "psgcar_control_result_report_push" })
+    public void getControlResultReportPushSchema(ConsumerRecord<String, byte[]> record)
+    {
+        try
+        {
+            Schema schema = avroConfig.getControlResultReportPushSchema();
+            GenericRecord message = AvroUtil.bytesRead(record.value(), schema);
+            
+            LOGGER.info("【getControlResultReportPushSchema-----offset={}, partition={}, key={}, value={}】",
+                    record.offset(), record.partition(), record.key(), message);
+            
+            // JSONObject messageJson =
+            // JSONObject.parseObject(message.toString());
+            // consumerService(messageJson);
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("", e);
+        }
+    }
 }

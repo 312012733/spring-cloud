@@ -83,7 +83,7 @@ public class KafkaProducerApplication
         
         /********************************************************/
         
-        testSendControlReport(kafkaConfig, controlReportSchema, 16);
+        testSendControlReport(kafkaConfig, controlReportSchema, 8);
         testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
         
         Thread.sleep(1000 * 10);
