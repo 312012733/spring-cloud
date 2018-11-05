@@ -22,7 +22,6 @@ public class JGitUtis implements JGitRepository
         this.jGitBean = jGitBean;
         
         init(jGitBean.getUri(), jGitBean.getBasedir());
-        
     }
     
     private void init(String uri, File baseDir) throws Exception
@@ -88,6 +87,11 @@ public class JGitUtis implements JGitRepository
     
     private void deleteFolder(File file)
     {
+        if (!file.exists())
+        {
+            return;
+        }
+        
         if (file.isFile() || file.list().length == 0)
         {
             file.delete();
@@ -156,21 +160,21 @@ public class JGitUtis implements JGitRepository
         return false;
     }
     
-    public static void main(String[] args) throws Exception
-    {
-        JGitBean jGitBean = new JGitBean();
-        
-        jGitBean.setBasedir(new File("F:\\temp\\local-config-center"));
-        jGitBean.setUri("https://github.com/312012733/config-center.git");
-        
-        JGitRepository JGitRepository = new JGitUtis(jGitBean);
-        
-        boolean pullRepos = JGitRepository.pullRepos();
-        
-        boolean fetchRepos = JGitRepository.fetchRepos();
-        
-        String findOne = JGitRepository.findOne("readme.txt");
-        System.out.println(findOne);
-        
-    }
+    // public static void main(String[] args) throws Exception
+    // {
+    // JGitBean jGitBean = new JGitBean();
+    //
+    // jGitBean.setBasedir(new File("F:\\temp\\local-config-center"));
+    // jGitBean.setUri("https://github.com/312012733/config-center.git");
+    //
+    // JGitRepository JGitRepository = new JGitUtis(jGitBean);
+    //
+    // boolean pullRepos = JGitRepository.pullRepos();
+    //
+    // boolean fetchRepos = JGitRepository.fetchRepos();
+    //
+    // String findOne = JGitRepository.findOne("readme.txt");
+    // System.out.println(findOne);
+    //
+    // }
 }
