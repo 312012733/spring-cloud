@@ -27,12 +27,54 @@ import kafka.utils.ZkUtils;
 
 public class KafkaUtils
 {
-    private static final int TIME_OUT = 1000;
+    public static final int TIME_OUT = 1000;
     private static final Logger LOG = LoggerFactory.getLogger(KafkaUtils.class);
     
     public static interface ConsumerSuccess
     {
         void onSuccess(ConsumerRecord<String, byte[]> record);
+    }
+    
+    public static class MyConsumerRebalanceListener implements ConsumerRebalanceListener
+    {
+        private KafkaConsumer<String, byte[]> consumer;
+        
+        public MyConsumerRebalanceListener(KafkaConsumer<String, byte[]> consumer)
+        {
+            this.consumer = consumer;
+        }
+        
+        public void onPartitionsRevoked(Collection<TopicPartition> partitions)
+        {
+            if (!partitions.isEmpty())
+            {
+                Map<TopicPartition, Long> beginningOffsets = consumer.beginningOffsets(partitions);
+                Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
+                
+                Map<TopicPartition, OffsetAndMetadata> map = new HashMap<>();
+                
+                for (TopicPartition partition : partitions)
+                {
+                    long offset = endOffsets.get(partition);
+                    long offset2 = consumer.position(partition);
+                    long offset3 = consumer.committed(partition).offset();
+                    LOG.info(
+                            "----onPartitionsRevoked----partitions:{},\n beginningOffsets:{},\n endOffsets:{}, position:{},committed:{}",
+                            partitions, beginningOffsets, endOffsets, offset2, offset3);
+                    map.put(partition, new OffsetAndMetadata(offset));
+                }
+                
+                consumer.commitSync(map);
+            }
+        }
+        
+        public void onPartitionsAssigned(Collection<TopicPartition> partitions)
+        {
+            if (!partitions.isEmpty())
+            {
+                consumer.seekToEnd(partitions);
+            }
+        }
     }
     
     public static void produce(String topic, KafkaProducer<String, byte[]> producer, byte[] value)
@@ -61,40 +103,7 @@ public class KafkaUtils
     
     public static void consume(String topic, KafkaConsumer<String, byte[]> consumer, ConsumerSuccess consumerSuccess)
     {
-        consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener()
-        {
-            public void onPartitionsRevoked(Collection<TopicPartition> partitions)
-            {
-                if (!partitions.isEmpty())
-                {
-                    Map<TopicPartition, Long> beginningOffsets = consumer.beginningOffsets(partitions);
-                    Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
-                    
-                    Map<TopicPartition, OffsetAndMetadata> map = new HashMap<>();
-                    
-                    for (TopicPartition partition : partitions)
-                    {
-                        long offset = endOffsets.get(partition);
-                        long offset2 = consumer.position(partition);
-                        long offset3 = consumer.committed(partition).offset();
-                        LOG.info(
-                                "----onPartitionsRevoked----partitions:{},\n beginningOffsets:{},\n endOffsets:{}, position:{},committed:{}",
-                                partitions, beginningOffsets, endOffsets, offset2, offset3);
-                        map.put(partition, new OffsetAndMetadata(offset));
-                    }
-                    
-                    consumer.commitSync(map);
-                }
-            }
-            
-            public void onPartitionsAssigned(Collection<TopicPartition> partitions)
-            {
-                if (!partitions.isEmpty())
-                {
-                    consumer.seekToEnd(partitions);
-                }
-            }
-        });
+        consumer.subscribe(Arrays.asList(topic), new MyConsumerRebalanceListener(consumer));
         
         while (true)
         {

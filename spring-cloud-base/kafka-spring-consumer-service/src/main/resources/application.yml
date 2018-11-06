@@ -20,7 +20,7 @@ kafka:
   consumerProperties: 
     bootstrap.servers: ${service.kafka.broker.connect}
     group.id: ${spring.application.name}
-    enable.auto.commit: true
+    enable.auto.commit: false
     auto.offset.reset: latest #latest, earliest, none
     auto.commit.interval.ms: 1000    
     key.deserializer: org.apache.kafka.common.serialization.StringDeserializer

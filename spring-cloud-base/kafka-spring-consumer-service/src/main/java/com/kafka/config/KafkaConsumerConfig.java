@@ -15,6 +15,8 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.listener.ConsumerAwareRebalanceListener;
+import org.springframework.kafka.listener.config.ContainerProperties;
 
 import com.kafka.config.KafkaBean.TopicBean;
 import com.kafka.utils.KafkaUtils;
@@ -45,7 +47,13 @@ public class KafkaConsumerConfig
         ConcurrentKafkaListenerContainerFactory<String, byte[]> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setConcurrency(countPartitions());
-        factory.getContainerProperties().setPollTimeout(KafkaUtils.TIME_OUT);
+        
+        ContainerProperties containerProperties = factory.getContainerProperties();
+        
+        containerProperties.setPollTimeout(KafkaUtils.TIME_OUT);
+        
+        ConsumerAwareRebalanceListener consumerRebalanceListener = null;
+        containerProperties.setConsumerRebalanceListener(consumerRebalanceListener);
         
         return factory;
     }

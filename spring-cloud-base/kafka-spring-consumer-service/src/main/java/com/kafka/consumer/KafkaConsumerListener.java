@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import com.avro.config.AvroConfig;
@@ -26,7 +27,7 @@ public class KafkaConsumerListener
     // { "0" ,"1" ,"2" ,"3" ,"4" ,"5" ,"6" ,"7" }) })
     @KafkaListener(topics =
     { "psgcar_control_result_report" })
-    public void controlResultKafkaConsumer(ConsumerRecord<String, byte[]> record)
+    public void controlResultKafkaConsumer(ConsumerRecord<String, byte[]> record, Acknowledgment ack)
     {
         try
         {
