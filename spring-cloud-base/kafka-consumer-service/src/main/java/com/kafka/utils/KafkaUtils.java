@@ -2,13 +2,16 @@ package com.kafka.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -60,16 +63,36 @@ public class KafkaUtils
     {
         consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener()
         {
-            public void onPartitionsRevoked(Collection<TopicPartition> collection)
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions)
             {
-                LOG.info("=================onPartitionsRevoked======{}", collection);
+                if (!partitions.isEmpty())
+                {
+                    Map<TopicPartition, Long> beginningOffsets = consumer.beginningOffsets(partitions);
+                    Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
+                    
+                    Map<TopicPartition, OffsetAndMetadata> map = new HashMap<>();
+                    
+                    for (TopicPartition partition : partitions)
+                    {
+                        long offset = endOffsets.get(partition);
+                        long offset2 = consumer.position(partition);
+                        long offset3 = consumer.committed(partition).offset();
+                        LOG.info(
+                                "----onPartitionsRevoked----partitions:{},\n beginningOffsets:{},\n endOffsets:{}, position:{},committed:{}",
+                                partitions, beginningOffsets, endOffsets, offset2, offset3);
+                        map.put(partition, new OffsetAndMetadata(offset));
+                    }
+                    
+                    consumer.commitSync(map);
+                }
             }
             
-            public void onPartitionsAssigned(Collection<TopicPartition> collection)
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions)
             {
-                // 将偏移设置到最开始
-                // consumer.seekToBeginning(collection);
-                LOG.info("=================onPartitionsAssigned======{}", collection);
+                if (!partitions.isEmpty())
+                {
+                    consumer.seekToEnd(partitions);
+                }
             }
         });
         
@@ -81,6 +104,7 @@ public class KafkaUtils
             {
                 consumerSuccess.onSuccess(record);
                 
+                consumer.commitAsync();
             }
         }
     }

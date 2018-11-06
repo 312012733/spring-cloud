@@ -6,9 +6,7 @@ import java.util.List;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.common.PartitionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -37,14 +35,14 @@ public class KafkaProducerApplication
         ConfigurableApplicationContext context = SpringApplication.run(KafkaProducerApplication.class, args);
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
-        KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         
         AvroConfig avroeConfig = context.getBean(AvroConfig.class);
         Schema controlReportSchema = avroeConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroeConfig.getControlResultReportPushSchema();
         
+        // 创建topic
+        KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         List<TopicBean> topics = kafkaBean.getTopics();
-        
         KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         for (TopicBean topicBean : topics)

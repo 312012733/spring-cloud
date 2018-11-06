@@ -30,14 +30,14 @@ public class KafkaConsumerApplication
         ConfigurableApplicationContext context = SpringApplication.run(KafkaConsumerApplication.class, args);
         
         KafkaConfig kafkaConfig = context.getBean(KafkaConfig.class);
-        KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         
         AvroConfig avroeConfig = context.getBean(AvroConfig.class);
         Schema controlReportSchema = avroeConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroeConfig.getControlResultReportPushSchema();
         
+        // 创建topic
+        KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         List<TopicBean> topics = kafkaBean.getTopics();
-        
         KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         for (TopicBean topicBean : topics)
