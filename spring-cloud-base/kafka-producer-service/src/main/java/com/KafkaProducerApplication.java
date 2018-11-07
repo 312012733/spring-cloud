@@ -40,10 +40,8 @@ public class KafkaProducerApplication
         Schema controlReportSchema = avroeConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroeConfig.getControlResultReportPushSchema();
         
-        // 创建topic
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         List<TopicBean> topics = kafkaBean.getTopics();
-        KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         for (TopicBean topicBean : topics)
         {

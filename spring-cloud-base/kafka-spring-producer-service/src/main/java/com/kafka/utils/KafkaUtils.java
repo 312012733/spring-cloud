@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -37,9 +38,9 @@ public class KafkaUtils
     
     public static class MyConsumerRebalanceListener implements ConsumerRebalanceListener
     {
-        private KafkaConsumer<String, byte[]> consumer;
+        private Consumer<?, ?> consumer;
         
-        public MyConsumerRebalanceListener(KafkaConsumer<String, byte[]> consumer)
+        public MyConsumerRebalanceListener(Consumer<?, ?> consumer)
         {
             this.consumer = consumer;
         }
@@ -51,20 +52,21 @@ public class KafkaUtils
                 Map<TopicPartition, Long> beginningOffsets = consumer.beginningOffsets(partitions);
                 Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
                 
-                Map<TopicPartition, OffsetAndMetadata> map = new HashMap<>();
+                Map<TopicPartition, OffsetAndMetadata> offsetMap = new HashMap<>();
                 
                 for (TopicPartition partition : partitions)
                 {
                     long offset = endOffsets.get(partition);
                     long offset2 = consumer.position(partition);
-                    long offset3 = consumer.committed(partition).offset();
+                    OffsetAndMetadata committed = consumer.committed(partition);
+                    long offset3 = committed == null ? -1 : committed.offset();
                     LOG.info(
                             "----onPartitionsRevoked----partitions:{},\n beginningOffsets:{},\n endOffsets:{}, position:{},committed:{}",
                             partitions, beginningOffsets, endOffsets, offset2, offset3);
-                    map.put(partition, new OffsetAndMetadata(offset));
+                    offsetMap.put(partition, new OffsetAndMetadata(offset));
                 }
                 
-                consumer.commitSync(map);
+                consumer.commitSync(offsetMap);
             }
         }
         
@@ -72,7 +74,25 @@ public class KafkaUtils
         {
             if (!partitions.isEmpty())
             {
+                Map<TopicPartition, Long> beginningOffsets = consumer.beginningOffsets(partitions);
+                Map<TopicPartition, Long> endOffsets = consumer.endOffsets(partitions);
+                
+                Map<TopicPartition, OffsetAndMetadata> offsetMap = new HashMap<>();
+                
+                for (TopicPartition partition : partitions)
+                {
+                    long offset = endOffsets.get(partition);
+                    long offset2 = consumer.position(partition);
+                    OffsetAndMetadata committed = consumer.committed(partition);
+                    long offset3 = committed == null ? -1 : committed.offset();
+                    LOG.info(
+                            "----onPartitionsAssigned----partitions:{},\n beginningOffsets:{},\n endOffsets:{}, position:{},committed:{}",
+                            partitions, beginningOffsets, endOffsets, offset2, offset3);
+                    offsetMap.put(partition, new OffsetAndMetadata(offset));
+                }
+                
                 consumer.seekToEnd(partitions);
+                consumer.commitSync(offsetMap);
             }
         }
     }

@@ -1,7 +1,6 @@
 package com;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -16,9 +15,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import com.avro.config.AvroConfig;
 import com.avro.utils.AvroUtil;
-import com.kafka.config.KafkaBean;
-import com.kafka.config.KafkaBean.TopicBean;
-import com.kafka.utils.KafkaUtils;
 
 @EnableEurekaClient
 @SpringBootApplication
@@ -26,14 +22,10 @@ public class KafkaSpringProducerApplication
 {
     final static Logger LOGGER = LoggerFactory.getLogger(KafkaSpringProducerApplication.class);
     
+    @SuppressWarnings("unused")
     public static void main(String[] args) throws Exception
     {
         ConfigurableApplicationContext context = SpringApplication.run(KafkaSpringProducerApplication.class, args);
-        
-        // 创建topic
-        KafkaBean kafkaBean = context.getBean(KafkaBean.class);
-        List<TopicBean> topics = kafkaBean.getTopics();
-        KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         /********************************************************/
         
