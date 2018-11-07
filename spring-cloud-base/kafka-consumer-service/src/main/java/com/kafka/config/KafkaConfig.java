@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import com.kafka.utils.KafkaUtils;
+
 @Configuration
 @EnableConfigurationProperties(KafkaBean.class)
 public class KafkaConfig
@@ -25,6 +27,8 @@ public class KafkaConfig
     @ConditionalOnMissingBean
     public KafkaConsumer<String, byte[]> kafkaConsumer()
     {
+        createTopics();
+        
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<String, byte[]>(kafkaBean.getConsumerProperties());
         
         return consumer;
@@ -40,4 +44,8 @@ public class KafkaConfig
         return producer;
     }
     
+    private void createTopics()
+    {
+        KafkaUtils.createTopics(kafkaBean.getTopics(), kafkaBean.getZookeeper().getConnect());
+    }
 }

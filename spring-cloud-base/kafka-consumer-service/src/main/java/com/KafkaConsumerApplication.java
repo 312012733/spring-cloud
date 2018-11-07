@@ -16,7 +16,6 @@ import com.consumer.ControlResultPushKafkaConsumerThread;
 import com.kafka.config.KafkaBean;
 import com.kafka.config.KafkaBean.TopicBean;
 import com.kafka.config.KafkaConfig;
-import com.kafka.utils.KafkaUtils;
 import com.utils.ThreadUtils;
 
 @EnableEurekaClient
@@ -35,10 +34,8 @@ public class KafkaConsumerApplication
         Schema controlReportSchema = avroeConfig.getControlResultReportSchema();
         Schema controlReportPushSchema = avroeConfig.getControlResultReportPushSchema();
         
-        // 创建topic
         KafkaBean kafkaBean = context.getBean(KafkaBean.class);
         List<TopicBean> topics = kafkaBean.getTopics();
-        KafkaUtils.createTopics(topics, kafkaBean.getZookeeper().getConnect());
         
         for (TopicBean topicBean : topics)
         {
