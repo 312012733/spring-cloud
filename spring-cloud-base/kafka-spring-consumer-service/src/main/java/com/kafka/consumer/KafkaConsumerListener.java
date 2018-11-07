@@ -21,13 +21,12 @@ public class KafkaConsumerListener
     @Autowired
     private AvroConfig avroConfig;
     
-    //
     // @KafkaListener(topicPartitions =
     // { @TopicPartition(topic = "psgcar_control_result_report", partitions =
     // { "0" ,"1" ,"2" ,"3" ,"4" ,"5" ,"6" ,"7" }) })
     @KafkaListener(topics =
     { "psgcar_control_result_report" })
-    public void controlResultKafkaConsumer(ConsumerRecord<String, byte[]> record, Acknowledgment ack)
+    public void controlResultKafkaConsumer(ConsumerRecord<String, byte[]> record, Acknowledgment acknowledgment)
     {
         try
         {
@@ -36,6 +35,8 @@ public class KafkaConsumerListener
             
             LOGGER.info("【controlResultKafkaConsumer-----offset={}, partition={}, key={}, value={}】", record.offset(),
                     record.partition(), record.key(), message);
+            
+            acknowledgment.acknowledge();
             
             // JSONObject messageJson =
             // JSONObject.parseObject(message.toString());
@@ -49,7 +50,7 @@ public class KafkaConsumerListener
     
     @KafkaListener(topics =
     { "psgcar_control_result_report_push" })
-    public void getControlResultReportPushSchema(ConsumerRecord<String, byte[]> record)
+    public void getControlResultReportPushSchema(ConsumerRecord<String, byte[]> record, Acknowledgment acknowledgment)
     {
         try
         {
@@ -58,6 +59,8 @@ public class KafkaConsumerListener
             
             LOGGER.info("【getControlResultReportPushSchema-----offset={}, partition={}, key={}, value={}】",
                     record.offset(), record.partition(), record.key(), message);
+            
+            acknowledgment.acknowledge();
             
             // JSONObject messageJson =
             // JSONObject.parseObject(message.toString());
