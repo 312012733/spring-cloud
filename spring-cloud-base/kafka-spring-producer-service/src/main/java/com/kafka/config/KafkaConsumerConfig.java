@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,6 @@ public class KafkaConsumerConfig
     @Bean
     public ConsumerFactory<String, byte[]> consumerFactory()
     {
-        createTopics();
-        
         Properties consumerProperties = kafkaBean.getConsumerProperties();
         Map consumerMap = consumerProperties;
         
@@ -66,6 +66,12 @@ public class KafkaConsumerConfig
         return factory;
     }
     
+    @PostConstruct
+    public void createTopics()
+    {
+        KafkaUtils.createTopics(kafkaBean.getTopics(), kafkaBean.getZookeeper().getConnect());
+    }
+    
     private static class MyConsumerAwareRebalanceListener implements ConsumerAwareRebalanceListener
     {
         
@@ -85,11 +91,6 @@ public class KafkaConsumerConfig
         
     }
     
-    private void createTopics()
-    {
-        KafkaUtils.createTopics(kafkaBean.getTopics(), kafkaBean.getZookeeper().getConnect());
-    }
-    
     private int countPartitions()
     {
         List<TopicBean> topics = kafkaBean.getTopics();
@@ -101,6 +102,7 @@ public class KafkaConsumerConfig
             int partitions = topicBean.getPartitions();
             
             count += partitions;
+            return count;
         }
         
         return count;

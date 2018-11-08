@@ -117,6 +117,7 @@ public class KafkaUtils
             {
                 consumerSuccess.onSuccess(record);
                 
+                consumer.commitAsync();
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.kafka.config;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,6 @@ public class KafkaConfig
     @ConditionalOnMissingBean
     public KafkaConsumer<String, byte[]> kafkaConsumer()
     {
-        createTopics();
-        
         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<String, byte[]>(kafkaBean.getConsumerProperties());
         
         return consumer;
@@ -44,7 +44,8 @@ public class KafkaConfig
         return producer;
     }
     
-    private void createTopics()
+    @PostConstruct
+    public void createTopics()
     {
         KafkaUtils.createTopics(kafkaBean.getTopics(), kafkaBean.getZookeeper().getConnect());
     }
