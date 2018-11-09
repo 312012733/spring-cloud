@@ -1,4 +1,4 @@
-package com.consumer;
+package com.kafka.consumer.impl;
 
 import org.apache.avro.Schema;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
