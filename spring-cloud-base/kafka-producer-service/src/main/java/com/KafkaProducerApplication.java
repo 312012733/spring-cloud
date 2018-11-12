@@ -2,7 +2,6 @@ package com;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -17,11 +16,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import com.avro.config.AvroConfig;
 import com.avro.utils.AvroUtil;
-import com.consumer.ControlResultKafkaConsumerThread;
-import com.consumer.ControlResultPushKafkaConsumerThread;
 import com.kafka.config.KafkaBean;
 import com.kafka.config.KafkaBean.TopicBean;
 import com.kafka.config.KafkaConfig;
+import com.kafka.consumer.impl.ControlResultKafkaConsumerThread;
+import com.kafka.consumer.impl.ControlResultPushKafkaConsumerThread;
 import com.kafka.utils.KafkaUtils;
 import com.utils.ThreadUtils;
 
@@ -76,8 +75,8 @@ public class KafkaProducerApplication
         
         /********************************************************/
         
-        testSendControlReport(kafkaConfig, controlReportSchema, 1);
-//        testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
+        testSendControlReport(kafkaConfig, controlReportSchema, 8);
+         testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
         
         Thread.sleep(1000 * 10);
         context.close();
@@ -92,7 +91,7 @@ public class KafkaProducerApplication
         
         for (int i = 0; i < threadCount; i++)
         {
-            final int index = i;
+            // final int index = i;
             new Thread()
             {
                 public void run()
@@ -101,8 +100,8 @@ public class KafkaProducerApplication
                     {
                         GenericRecord record = new GenericData.Record(controlReportSchema);
                         record.put("vin", "9527");
-                        record.put("uuid","same");
-//                        record.put("uuid", UUID.randomUUID().toString());
+                        record.put("uuid", "same");
+                        // record.put("uuid", UUID.randomUUID().toString());
                         record.put("time", System.currentTimeMillis());
                         record.put("result", "true");
                         

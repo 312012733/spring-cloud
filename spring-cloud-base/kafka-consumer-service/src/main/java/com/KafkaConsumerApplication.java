@@ -13,9 +13,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import com.avro.config.AvroConfig;
 import com.kafka.config.KafkaBean;
 import com.kafka.config.KafkaBean.TopicBean;
+import com.kafka.config.KafkaConfig;
 import com.kafka.consumer.impl.ControlResultKafkaConsumerThread;
 import com.kafka.consumer.impl.ControlResultPushKafkaConsumerThread;
-import com.kafka.config.KafkaConfig;
 import com.utils.ThreadUtils;
 
 @EnableEurekaClient
