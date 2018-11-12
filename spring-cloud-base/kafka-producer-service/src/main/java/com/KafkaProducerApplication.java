@@ -76,7 +76,7 @@ public class KafkaProducerApplication
         /********************************************************/
         
         testSendControlReport(kafkaConfig, controlReportSchema, 8);
-         testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
+        testSendControlReportPush(kafkaConfig, controlReportPushSchema, 8);
         
         Thread.sleep(1000 * 10);
         context.close();
