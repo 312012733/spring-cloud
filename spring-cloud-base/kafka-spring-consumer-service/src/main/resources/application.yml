@@ -5,7 +5,31 @@ spring:
   servlet:
     multipart:
       location: E:\upload
-     
+#kafka config
+  kafka: 
+    listener: 
+      poll-timeout: 1000
+      ack-mode: MANUAL
+      concurrency: 8
+    consumer: 
+      bootstrap-servers: ${service.kafka.broker.connect}
+      group-id: ${spring.application.name}
+      enable-auto-commit: false
+      auto-offset-reset: latest #latest, earliest, none
+      auto-commit-interval: 1000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer  
+    producer: 
+      bootstrap-servers: ${service.kafka.broker.connect}
+      acks: all
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+      properties:
+        linger-ms: 1
+        
 #kafka config
 kafka: 
   zookeeper:
@@ -17,23 +41,23 @@ kafka:
     - name: psgcar_control_result_report_push
       partitions: 8
       replicationFactor: 1
-  consumerProperties: 
-    bootstrap.servers: ${service.kafka.broker.connect}
-    group.id: ${spring.application.name}
-    enable.auto.commit: false
-    auto.offset.reset: latest #latest, earliest, none
-    auto.commit.interval.ms: 1000    
-    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer       
-  producerProperties: 
-    bootstrap.servers: ${service.kafka.broker.connect}
-    acks: all
-    retries: 0
-    batch.size: 16384
-    linger.ms: 1
-    buffer.memory: 33554432
-    key.serializer: org.apache.kafka.common.serialization.StringSerializer
-    value.serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+#  consumerProperties: 
+#    bootstrap.servers: ${service.kafka.broker.connect}
+#    group.id: ${spring.application.name}
+#    enable.auto.commit: false
+#    auto.offset.reset: latest #latest, earliest, none
+#    auto.commit.interval.ms: 1000    
+#    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#    value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer       
+#  producerProperties: 
+#    bootstrap.servers: ${service.kafka.broker.connect}
+#    acks: all
+#    retries: 0
+#    batch.size: 16384
+#    linger.ms: 1
+#    buffer.memory: 33554432
+#    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+#    value.serializer: org.apache.kafka.common.serialization.ByteArraySerializer
         
 debug: 
   false
