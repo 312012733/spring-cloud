@@ -1,4 +1,4 @@
-package com.consumer;
+package com.kafka.consumer.impl;
 
 import org.apache.avro.Schema;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cassandra.service.IControlRecordService;
 import com.consumer.vo.ControlResultKafkMsg;
 import com.kafka.consumer.KafkaConsumerThread;
 
@@ -28,13 +29,12 @@ public class ControlResultKafkaConsumerThread extends KafkaConsumerThread
         {
             ControlResultKafkMsg kfkMsg = msgJson.toJavaObject(ControlResultKafkMsg.class);
             
-            // LOGGER.info("kfkMsg:{}", kfkMsg);
+            LOGGER.info("kfkMsg:{}", kfkMsg);
             
-            // ControlResultConsumer controlResultConsumer =
-            // (ControlResultConsumer) kafkaConsumer;
+            IControlRecordService controlRecordService = context.getBean(IControlRecordService.class);
             
             // 保存车控结果
-            // controlResultConsumer.getControlRecordService().saveControlResult(kfkMsg);
+            controlRecordService.saveControlResult(kfkMsg);
             
         }
         catch (Exception e)

@@ -5,7 +5,14 @@ spring:
   servlet:
     multipart:
       location: E:\upload
-     
+#cassandra config  
+  data:
+    cassandra:
+      port: 9042
+      contact-points: 127.0.0.1
+      keyspace-name: tcar_psgcar_control
+
+        
 #kafka config
 kafka: 
   zookeeper:

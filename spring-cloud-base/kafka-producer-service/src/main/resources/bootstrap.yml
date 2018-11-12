@@ -42,11 +42,7 @@ eureka:
 #      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
       defaultZone: http://127.0.0.1:8761/eureka/
 
-service:
-  cassandra:
-    hostname: 127.0.0.1
-    port: 9042
-    keyspace: tcar_psgcar_control
+service: 
   kafka: 
 #    broker:
 #      connect: 192.168.3.62:9092

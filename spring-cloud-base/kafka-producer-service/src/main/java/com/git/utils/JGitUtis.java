@@ -1,4 +1,4 @@
-package com.git.config;
+package com.git.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
+import com.git.config.JGitBean;
+import com.git.config.JGitRepository;
 
 public class JGitUtis implements JGitRepository
 {
