@@ -32,7 +32,8 @@ public class ParamsQueryRecord
     private String type;
     
     /**
-     * paramID:0110 Wifi用户名, paramID:0111 Wifi密码, paramID:0112 Wifi开关 。格式：[{paramID:0110},{paramID:0111},{paramID:0112}]
+     * paramID:0110 Wifi用户名, paramID:0111 Wifi密码, paramID:0112 Wifi开关
+     * 。格式：[{paramID:0110},{paramID:0111},{paramID:0112}]
      */
     @Column(value = "param_items")
     @CassandraType(type = DataType.Name.TEXT)

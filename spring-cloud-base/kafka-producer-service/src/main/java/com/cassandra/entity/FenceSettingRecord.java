@@ -20,8 +20,8 @@ public class FenceSettingRecord
     private String uuid; // TBOX网关返回主键
     
     /**
-     * 1:添加成可用的(清除旧可用标识。设置快速创建标记) 2:修改成可用的(必传sourceId ，清除旧可用标识) 3:删除一个可用的(必传sourceId，删除旧的可用数据)
-     * 4:清除可用（必传sourceId，清除旧的可用标识）
+     * 1:添加成可用的(清除旧可用标识。设置快速创建标记) 2:修改成可用的(必传sourceId ，清除旧可用标识)
+     * 3:删除一个可用的(必传sourceId，删除旧的可用数据) 4:清除可用（必传sourceId，清除旧的可用标识）
      */
     @Column(value = "action")
     @CassandraType(type = DataType.Name.TEXT)
@@ -44,7 +44,8 @@ public class FenceSettingRecord
     private Long creatTime; // 时间
     
     /**
-     * 0:失败 1:成功 2:待总线正常通信后执行 3:执行失败，解除安全模式出错 4:执行失败，限速写入出错 5:ECU 超时无响应 6:空气净化器未开启时，不允许进行模式操作 7:在一条车控正在执行过程中，车控指令不能执 行
+     * 0:失败 1:成功 2:待总线正常通信后执行 3:执行失败，解除安全模式出错 4:执行失败，限速写入出错 5:ECU 超时无响应
+     * 6:空气净化器未开启时，不允许进行模式操作 7:在一条车控正在执行过程中，车控指令不能执 行
      */
     @Column(value = "result")
     @CassandraType(type = DataType.Name.TEXT)

@@ -36,7 +36,7 @@ public class ControlRecordServiceImpl implements IControlRecordService
         
         BeanUtils.copyPropertiesIgnoreNullValue(kfkMsg, controlRecord, "time");
         
-//        ControlRecord controlRecord = new ControlRecord();
+        // ControlRecord controlRecord = new ControlRecord();
         controlRecord.getControlMap().put("key1", "value1");
         controlRecord.getControlMap().put("key2", "value2");
         BeanUtils.copyPropertiesIgnoreNullValue(kfkMsg, controlRecord);

@@ -2,7 +2,6 @@ package com.cassandra.entity;
 
 import java.util.HashMap;
 
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;

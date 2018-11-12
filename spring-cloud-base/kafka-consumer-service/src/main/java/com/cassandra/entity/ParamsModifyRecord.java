@@ -25,14 +25,16 @@ public class ParamsModifyRecord
     private Long time; // 时间
     
     /**
-     * 0:失败 1:成功 2:待总线正常通信后执行 3:执行失败，解除安全模式出错 4:执行失败，限速写入出错 5:ECU 超时无响应 6:空气净化器未开启时，不允许进行模式操作 7:在一条车控正在执行过程中，车控指令不能执 行
+     * 0:失败 1:成功 2:待总线正常通信后执行 3:执行失败，解除安全模式出错 4:执行失败，限速写入出错 5:ECU 超时无响应
+     * 6:空气净化器未开启时，不允许进行模式操作 7:在一条车控正在执行过程中，车控指令不能执 行
      */
     @Column(value = "result")
     @CassandraType(type = DataType.Name.TEXT)
     private String result;
     
     /**
-     * paramID:0110 paramValue:Wifi用户名, paramID:0111 paramValue:Wifi密码, paramID:0112 paramValue:Wifi开关
+     * paramID:0110 paramValue:Wifi用户名, paramID:0111 paramValue:Wifi密码,
+     * paramID:0112 paramValue:Wifi开关
      * 格式：[{paramID:0110,paramValue:Wifi用户名},{paramID:0111,paramValue:Wifi密码},{paramID:0112,paramValue:Wifi开关}]
      */
     @Column(value = "param_items")

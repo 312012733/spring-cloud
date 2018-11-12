@@ -11,4 +11,4 @@ public interface IControlRecordRepository extends CassandraRepository<ControlRec
     @Query("SELECT * FROM control_record WHERE vin = ?0 LIMIT 1 ALLOW FILTERING")
     ControlRecord getControlRecordByLastTime(String vin);
     
-} 
+}
