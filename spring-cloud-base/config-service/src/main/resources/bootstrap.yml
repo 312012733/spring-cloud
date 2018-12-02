@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 2001
+  port: 11001
 #  servlet:
 #    context-path: /config
     
@@ -20,7 +20,8 @@ spring:
           searchPaths: applications,avro
           username: 
           password: 
-          basedir: F:\\temp\\config-center
+#          basedir: F:\\temp\\config-center
+          basedir: /home/java/config-center
 
 
 #eureka config
@@ -43,9 +44,9 @@ eureka:
     registryFetchIntervalSeconds: 5  
     availabilityZones:
       default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
-    serviceUrl:
-      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
-#      defaultZone: http://172.16.5.220:8761/eureka/
+    serviceUrl: 
+      defaultZone: http://192.168.3.238:8761/eureka/,http://192.168.3.241:8761/eureka/,http://192.168.3.241:8762/eureka/,http://192.168.3.241:8763/eureka/
+
 
 
 
