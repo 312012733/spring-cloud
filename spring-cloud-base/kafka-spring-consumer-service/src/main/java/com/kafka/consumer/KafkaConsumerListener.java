@@ -48,8 +48,8 @@ public class KafkaConsumerListener
         }
     }
     
-    @KafkaListener(topics =
-    { "psgcar_control_result_report_push" })
+//    @KafkaListener(topics =
+//    { "psgcar_control_result_report_push" })
     public void getControlResultReportPushSchema(ConsumerRecord<String, byte[]> record, Acknowledgment acknowledgment)
     {
         try

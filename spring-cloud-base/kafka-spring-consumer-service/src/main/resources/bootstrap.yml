@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 8102
+  port: 19001
   servlet:
     context-path: /kafka-spring-consumer
     
@@ -39,25 +39,20 @@ eureka:
     availabilityZones:
       default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
     serviceUrl:
-#      defaultZone: http://192.168.3.207:8761/eureka/,http://192.168.3.62:8761/eureka/
-      defaultZone: http://127.0.0.1:8761/eureka/
+      defaultZone: http://192.168.3.241:8761/eureka/,http://192.168.3.241:8762/eureka/,http://192.168.3.241:8763/eureka/
 
 service:
-  cassandra:
-    hostname: 127.0.0.1
-    port: 9042
-    keyspace: tcar_psgcar_control
+#  cassandra:
+#    hostname: 127.0.0.1
+#    port: 9042
+#    keyspace: tcar_psgcar_control
   kafka: 
-#    broker:
-#      connect: 192.168.3.62:9092
-#    zookeeper:
-#      connect: 192.168.3.62:2181
-    broker:
-      connect: 172.16.5.220:9092
+    broker: 
+      connect: 192.168.3.241:9092
     zookeeper:
-      connect: 172.16.5.220:2181
+      connect: 192.168.3.241:2181
   git: 
     uri: https://github.com/312012733/config-center.git
-    basedir: F:\temp\local-config-center
+    basedir: /home/java/local-config-center
     username: 
     password: 
