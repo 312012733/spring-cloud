@@ -37,7 +37,7 @@ public class KafkaSpringProducerApplication
         Schema controlReportPushSchema = avroeConfig.getControlResultReportPushSchema();
         
         testSendControlReport(kafkaTemplate, controlReportSchema, 8);
-        testSendControlReportPush(kafkaTemplate, controlReportPushSchema, 8);
+//        testSendControlReportPush(kafkaTemplate, controlReportPushSchema, 8);
         
         Thread.sleep(1000 * 10);
         context.close();
