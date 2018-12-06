@@ -53,6 +53,6 @@ service:
       connect: 192.168.3.241:2181
   git: 
     uri: https://github.com/312012733/config-center.git
-    basedir: F:\temp\local-config-center
+    basedir: /home/java/local-config-center
     username: 
     password: 
