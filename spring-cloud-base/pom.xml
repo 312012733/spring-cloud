@@ -32,7 +32,7 @@
 		<module>kafka-producer-service</module>
 		<module>kafka-spring-consumer-service</module>
 		<module>kafka-spring-producer-service</module>
-		
+		<module>rabbit-spring-consumer-service</module>
 	</modules>
 
 	<properties>
