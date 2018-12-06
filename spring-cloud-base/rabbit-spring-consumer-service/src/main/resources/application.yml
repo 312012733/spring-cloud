@@ -4,12 +4,13 @@ spring:
       indent-output: true
   servlet:
     multipart:
-      location: E:\upload
-#kafka config
-
-        
-
-        
+      location: /home/java/upload
+#rabbitmq config
+  rabbitmq: 
+    host: 192.168.3.241
+    port: 5672
+    username: root
+    password: root
 debug: 
   false
 

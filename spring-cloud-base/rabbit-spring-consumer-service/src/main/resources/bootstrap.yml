@@ -42,11 +42,6 @@ eureka:
       defaultZone: http://192.168.3.241:8761/eureka/,http://192.168.3.241:8762/eureka/,http://192.168.3.241:8763/eureka/
 
 service: 
-  rabbit: 
-    broker: 
-      connect: 192.168.3.241:9092
-    zookeeper:
-      connect: 192.168.3.241:2181
   git: 
     uri: https://github.com/312012733/config-center.git
     basedir: /home/java/local-config-center
