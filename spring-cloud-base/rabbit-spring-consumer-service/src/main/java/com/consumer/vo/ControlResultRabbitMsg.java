@@ -1,6 +1,8 @@
 package com.consumer.vo;
 
-public class ControlResultRabbitMsg
+import java.io.Serializable;
+
+public class ControlResultRabbitMsg implements Serializable
 {
     private String vin;
     private String uuid;
@@ -9,6 +11,15 @@ public class ControlResultRabbitMsg
     
     public ControlResultRabbitMsg()
     {
+    }
+    
+    public ControlResultRabbitMsg(String vin, String uuid, String result, Long time)
+    {
+        super();
+        this.vin = vin;
+        this.uuid = uuid;
+        this.result = result;
+        this.time = time;
     }
     
     public String getVin()
