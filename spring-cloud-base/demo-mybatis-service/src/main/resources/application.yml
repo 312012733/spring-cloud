@@ -4,7 +4,7 @@ spring:
       indent-output: true
   servlet:
     multipart:
-      location: E:\upload     
+      location: /home/java/upload     
      
       
 mybatis:
@@ -13,13 +13,13 @@ mybatis:
   - classpath:mapper2/*.xml
   configuration:
     cache-enabled: true
+  
     
 service:
   database: test
-  upload-dir: F:\upload-temp
+  upload-dir: /home/java/upload
   c3p0: 
-    jdbcUrl: jdbc:mysql://192.168.3.207:3306/${service.database}?characterEncoding=utf-8
-#    jdbcUrl: jdbc:mysql://127.0.0.1:3306/${service.database}
+    jdbcUrl: jdbc:mysql://192.168.3.241:3306/${service.database}?characterEncoding=utf-8
     driverClass: com.mysql.jdbc.Driver
     user: root
     password: root

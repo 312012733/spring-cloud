@@ -21,7 +21,7 @@ public interface ITeacherDao
     // List<Teacher> findTeachersByPage(Page<Teacher> page, Teacher condition);
     //
     
-    String[] findTeacherIdsByTeacherIds(String[] teacherIds);
+    String[] findTeacherIdsByTeacherIds(List<String> teacherIds);
     
     List<Teacher> findTeachers();
     

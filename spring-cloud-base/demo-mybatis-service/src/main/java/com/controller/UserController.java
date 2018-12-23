@@ -78,7 +78,7 @@ public class UserController
             }
             
             // 验证用户信息
-            User user = userService.findUserByUsernameAndPassword(userName, password);
+            User user = userService.findByUsernameAndPassword(userName, password);
             
             if (null == user)
             {

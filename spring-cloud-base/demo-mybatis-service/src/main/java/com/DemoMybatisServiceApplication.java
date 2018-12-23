@@ -6,12 +6,12 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class TempServiceApplication
+public class DemoMybatisServiceApplication
 {
     
     public static void main(String[] args) throws NoSuchFieldException, SecurityException, NoSuchMethodException
     {
-        SpringApplication.run(TempServiceApplication.class, args);
+        SpringApplication.run(DemoMybatisServiceApplication.class, args);
         
     }
 }

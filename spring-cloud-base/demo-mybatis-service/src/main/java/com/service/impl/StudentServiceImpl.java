@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +18,7 @@ import com.dao.IStudentDao;
 import com.dao.IStudentIdCardDao;
 import com.dao.ITeacherDao;
 import com.service.IStudentService;
-import com.vo.Page;
+//import com.vo.Page;
 import com.vo.StudentDTO;
 
 @Service
@@ -136,15 +139,14 @@ public class StudentServiceImpl implements IStudentService
     }
     
     @Override
-    public Page<Student> findStudentsByPage(Page<Student> page, Student condition)
+    public Page<Student> findStudentsByPage(Pageable pageable, Student condition)
     {
-        List<Student> stuList = stuDao.findStudentsByPage(page, condition);
+        List<Student> stuList = stuDao.findStudentsByPage(pageable, condition);
         Long totalCount = stuDao.queryCount(condition);
         
-        page.setContent(stuList);
-        page.setTotalCount(totalCount);
+        PageImpl<Student> pageImpl = new PageImpl<>(stuList, pageable, totalCount);
         
-        return page;
+        return pageImpl;
     }
     
     @Override
@@ -218,14 +220,14 @@ public class StudentServiceImpl implements IStudentService
         return idcard;
     }
     
-    private void addStuAndTeacher(String[] teacherIds, String stuId, ITeacherDao teacherDao,
+    private void addStuAndTeacher(List<String> teacherIds, String stuId, ITeacherDao teacherDao,
             IStudentAndTeacherDao stuAndteacherDao) throws SecurityException
     {
-        if (null != teacherIds && teacherIds.length > 0)
+        if (null != teacherIds && !teacherIds.isEmpty())
         {
             String[] dbTeacherIds = teacherDao.findTeacherIdsByTeacherIds(teacherIds);
             
-            if (teacherIds.length != dbTeacherIds.length)
+            if (teacherIds.size() != dbTeacherIds.length)
             {
                 throw new SecurityException("teacherIds is error. ");
             }

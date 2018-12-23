@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +24,7 @@ import com.bean.Student;
 import com.config.ConfigBean;
 import com.service.IStudentService;
 import com.vo.ErrorHandler;
-import com.vo.Page;
+//import com.vo.Page;
 import com.vo.StudentDTO;
 
 //@Controller
@@ -37,7 +41,7 @@ public class StudentController
     
     @RequestMapping(value = "/student/page", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     // @ResponseBody
-    public ResponseEntity<Object> findByPage(StudentDTO stuDTO, Page<Student> page, HttpServletResponse response)
+    public ResponseEntity<Object> findByPage(StudentDTO stuDTO, @PageableDefault(page = 0, size = 5, direction = Direction.DESC, sort = "createTime") Pageable pageable, HttpServletResponse response)
             throws IOException
     {
         
@@ -46,7 +50,7 @@ public class StudentController
             LOG.info("============StudentController.findByPage============================configBean:"
                     + JSONObject.toJSONString(configBean, true));
             
-            Page<Student> pageResult = stuService.findStudentsByPage(page, stuDTO.buildStuCondition());
+            Page<Student> pageResult = stuService.findStudentsByPage(pageable, stuDTO.buildStuCondition());
             
             return new ResponseEntity<>(pageResult, HttpStatus.OK);
         }

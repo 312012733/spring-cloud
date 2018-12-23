@@ -1,6 +1,5 @@
 package com.vo;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.bean.MyClass;
@@ -19,7 +18,7 @@ public class StudentDTO
     
     private MyClass myClass;
     
-    private String[] teacherIds;
+    private List<String> teacherIds;
     
     private List<Teacher> owerTeachers;
     
@@ -31,15 +30,15 @@ public class StudentDTO
     
     public Student buildStuCondition()
     {
-        return new Student(null, name, age, gender);
+        return new Student(null, name, age, gender, myClass);
     }
     
-    public String[] getTeacherIds()
+    public List<String> getTeacherIds()
     {
         return teacherIds;
     }
     
-    public void setTeacherIds(String[] teacherIds)
+    public void setTeacherIds(List<String> teacherIds)
     {
         this.teacherIds = teacherIds;
     }
@@ -118,8 +117,8 @@ public class StudentDTO
     public String toString()
     {
         return "StudentDTO [id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", myClass="
-                + myClass + ", teacherIds=" + Arrays.toString(teacherIds) + ", owerTeachers=" + owerTeachers
-                + ", unOwerTeachers=" + unOwerTeachers + "]";
+                + myClass + ", teacherIds=" + teacherIds + ", owerTeachers=" + owerTeachers + ", unOwerTeachers="
+                + unOwerTeachers + "]";
     }
     
 }

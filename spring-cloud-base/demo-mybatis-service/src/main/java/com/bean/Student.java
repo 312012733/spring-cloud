@@ -28,12 +28,13 @@ public class Student
     {
     }
     
-    public Student(String id, String name, Integer age, Boolean gender)
+    public Student(String id, String name, Integer age, Boolean gender, MyClass myClass)
     {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.myClass = myClass;
     }
     
     public Long getCreateTime()

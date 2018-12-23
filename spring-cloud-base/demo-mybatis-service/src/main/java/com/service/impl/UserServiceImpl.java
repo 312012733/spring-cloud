@@ -14,7 +14,7 @@ public class UserServiceImpl implements IUserService
     private IUserDao userDao;
     
     @Override
-    public User findUserByUsernameAndPassword(String userName, String password) throws Exception
+    public User findByUsernameAndPassword(String userName, String password) throws Exception
     {
         return userDao.findUserByUsernameAndPassword(userName, password);
     }

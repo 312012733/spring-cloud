@@ -14,21 +14,19 @@
 	});
 	
 	
-	function findStudents(curPage_ , condition){
+	function findStudents(curPage_ ){
+		
+		var pageSize = $("#page_size").val();
 		
 		var data = {
-				"curPage":curPage_,
-				"pageSize":$("#page_size").val()
+				"page":curPage_,
+				"size":pageSize
 			};
 	
 		if(condition){
-			// 添加 查询条件 的属性
-			data["name"] = condition.stuName;
-			data["age"] = condition.stuAge;
-			if ( condition.stuGender ){//struts2 认为 非true 就是 false。 所以 没有参数就不下发。
-				data["gender"] = condition.stuGender;
-			}
-			
+			data = condition;
+			data["page"] = curPage_;
+			data["size"] = pageSize;
 		}
 		
 // 		alert(JSON.stringify(data));
@@ -44,23 +42,23 @@
 				$("#studentList tr:gt(0)").remove();
 				
 				//更新分页信息
-				curPage = result.curPage;
+				curPage = result.number;
 				
-				$("#cur_page").html(result.curPage + 1);
-				$("#page_size").val(result.pageSize);
-				$("#max_page").html(result.totalPage);
-				$("#max_element_count").html(result.totalCount);
-				$("#cur_element_count").html(result.curCount);
+				$("#cur_page").html(result.number + 1);
+				$("#page_size").val(result.size);
+				$("#max_page").html(result.totalPages);
+				$("#max_element_count").html(result.totalElements);
+				$("#cur_element_count").html(result.numberOfElements);
 				
 				//更新 上一页 下一页 按钮 状态
 				$("#pre_page").prop("disabled","");
 				$("#next_page").prop("disabled","");
 				
-				if(result.isFirst == true){
+				if(result.first == true){
 					$("#pre_page").prop("disabled","disabled");
 				}
 				
-				if(result.isLast == true){
+				if(result.last == true){
 					$("#next_page").prop("disabled","disabled");
 				}
 				
@@ -194,28 +192,40 @@
 	function go(){
 		findStudents($("#input_page").val() - 1 , condition);
 	}
-	
-	function executQuery(){
-		
-		findStudents(0 , buildQueryCondition());
-	}
-	
-	function buildQueryCondition(){
-		 condition = {
-				"stuName":$("#stuNameParam").val(),		
-				"stuAge":$("#stuAgeParam").val(),		
-				"stuGender":$("#stuGenderParam").val()	
-			};
-		
-		return condition;
-	}
 
+	function executQuery(){
+		condition = {};
+		
+		var name = $("#stuNameParam").val();
+		var age = $("#stuAgeParam").val();
+		var gender = $("#stuGenderParam").val();
+		var myClassName = $("#stuClassParam").val();
+		
+		if(name){
+			condition["name"] = name;
+		}
+		
+		if(age){
+			condition["age"] = age;
+		}
+		
+		if(gender){
+			condition["gender"] = gender;
+		}
+		
+		if(myClassName){
+			condition["myClass.name"] = myClassName;
+		}
+		
+		findStudents(0);
+	}
 </script>
 
 </head>
 <body>
 	姓名：<input type="text" id="stuNameParam"   value=""/>
 	年龄：<input type="text" id="stuAgeParam"   value=""/>
+	班级：<input type="text" id="stuClassParam"   value=""/>
 	性别：<select id="stuGenderParam" >
 			<option value="" >--请选择--</option >
 			<option value="false" >男</option >

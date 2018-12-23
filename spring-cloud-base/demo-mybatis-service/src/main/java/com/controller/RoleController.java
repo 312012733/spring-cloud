@@ -77,6 +77,10 @@ public class RoleController
         try
         {
             Role role = roleDao.findRoleById(roleId);
+            if (null == role)
+            {
+                throw new SecurityException("role is not found . role id is " + roleId);
+            }
             
             byte[] bytes = role.getHead();
             

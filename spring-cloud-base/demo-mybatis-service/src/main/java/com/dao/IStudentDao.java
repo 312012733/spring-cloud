@@ -2,8 +2,9 @@ package com.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 import com.bean.Student;
-import com.vo.Page;
 
 public interface IStudentDao
 {
@@ -11,7 +12,7 @@ public interface IStudentDao
     
     Student findStudentById(String stuId);
     
-    List<Student> findStudentsByPage(Page<Student> page, Student condition);
+    List<Student> findStudentsByPage(Pageable pageable, Student condition);
     
     Long queryCount(Student condition);
     

@@ -1,7 +1,9 @@
 package com.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.bean.Student;
-import com.vo.Page;
 import com.vo.StudentDTO;
 
 public interface IStudentService
@@ -9,7 +11,7 @@ public interface IStudentService
     
     void addStudent(StudentDTO stuDTO);
     
-    Page<Student> findStudentsByPage(Page<Student> page, Student condition);
+    Page<Student> findStudentsByPage(Pageable pageable, Student condition);
     
     StudentDTO findStudentById(String stuId);
     
