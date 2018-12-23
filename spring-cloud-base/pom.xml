@@ -33,6 +33,7 @@
 		<module>kafka-spring-producer-service</module>
 		<module>rabbit-spring-consumer-service</module>
 		<module>demo-mybatis-service</module>
+		<module>demo-jpa-service</module>
 	</modules>
 
 	<properties>
