@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 19991
+  port: 19081
   servlet:
     context-path: /kafka-spring-producer
     

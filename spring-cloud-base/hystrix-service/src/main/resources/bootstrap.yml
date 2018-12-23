@@ -1,6 +1,6 @@
 #server config
 server: 
-  port: 9003
+  port: 19031
   servlet:
     context-path: /hystrix
     

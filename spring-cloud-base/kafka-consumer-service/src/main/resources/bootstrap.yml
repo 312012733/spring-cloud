@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 8002
+  port: 19051
   servlet:
     context-path: /kafka-consumer
     

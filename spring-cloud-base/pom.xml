@@ -27,12 +27,12 @@
 		<module>ribbon-service</module>
 		<module>feign-service</module>
 		<module>hystrix-service</module>
-		<module>temp-service</module>
 		<module>kafka-consumer-service</module>
 		<module>kafka-producer-service</module>
 		<module>kafka-spring-consumer-service</module>
 		<module>kafka-spring-producer-service</module>
 		<module>rabbit-spring-consumer-service</module>
+		<module>demo-mybatis-service</module>
 	</modules>
 
 	<properties>

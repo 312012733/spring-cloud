@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 19001
+  port: 19071
   servlet:
     context-path: /kafka-spring-consumer
     

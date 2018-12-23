@@ -1,6 +1,6 @@
 #server config
 server: 
-  port: 1001
+  port: 19111
   servlet:
     context-path: /test
     

@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 19011
+  port: 19091
   servlet:
     context-path: /rabbit-spring-consumer
     

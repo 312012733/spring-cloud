@@ -1,6 +1,6 @@
 #server config
 server:
-  port: 9004
+  port: 19041
   servlet:
     context-path: /zuul
     
