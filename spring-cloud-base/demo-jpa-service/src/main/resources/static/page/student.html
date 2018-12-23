@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="/test/lib/jquery-1.6.1.js"></script>
+<script type="text/javascript" src="/test/js/common/myUtils.js"></script>
+<link href="" rel="stylesheet">
+<script type="text/javascript">
+	var action = "";
+
+	$(function() {
+
+		action = getUrlParamValue(window.location.search, "action");
+
+		if ("update" == action) {
+			$("#stuTitle").html("修改学生");
+		} else if ("add" == action) {
+			$("#stuTitle").html("添加学生");
+
+		} else if ("find" == action) {
+			$("#stuTitle").html("查看学生");
+			$("#stuSubmit").remove();
+		}
+
+		findClasses();
+
+		if ("add" == action) {
+			findTeachers();
+		} else {
+			findStudent();
+		}
+
+		initMultipartSelect();
+	});
+
+	function initMultipartSelect() {
+		$("#right").click(function() {
+		/*	var leftSelectedCopy = $("#leftSelect option:selected").clone();
+			leftSelectedCopy.appendTo($("#rightSelect"));
+			$("#leftSelect option:selected").remove();*/
+			
+			 $("#leftSelect option:selected").appendTo($("#rightSelect"));
+		});
+
+		$("#left").click(function() {
+			/*var rightSelectedCopy = $("#rightSelect option:selected").clone();
+			rightSelectedCopy.appendTo($("#leftSelect"));
+			$("#rightSelect option:selected").remove();*/
+			
+			$("#rightSelect option:selected").appendTo($("#leftSelect"));
+		});
+	}
+
+	function submit() {
+
+		if ("update" == action) {
+			updateStudent();
+		} else if ("add" == action) {
+			addStudent();
+		}
+	}
+
+	function findStudent() {
+
+		var stuId = getUrlParamValue(window.location.search, "stuId");
+
+		// 		alert(JSON.stringify(data));
+
+		$.ajax({
+			"url" : "/test/" + stuId + "/student",
+			"type" : "get",
+			"success" : function(result) {
+				//alert(JSON.stringify(result));
+
+				var content = result;
+
+				$("#stuName").val(content.name);
+				$("#stuAge").val(content.age);
+
+				$("input[name='stuGender'][value='" + content.gender + "']")
+						.prop("checked", true);
+
+				if (content.myClass) {
+					$("#stuClass option[value=" + content.myClass.id + "]")
+							.prop("selected", true);
+				}
+
+				if (content.unOwerTeachers) {
+					$(content.unOwerTeachers).each(
+							function() {
+								var option = "<option value='"+this.id+"'>"
+										+ this.name + "</option>";
+
+								$("#leftSelect").append(option);
+
+							});
+				}
+
+				if (content.owerTeachers) {
+					$(content.owerTeachers).each(
+							function() {
+								var option = "<option value='"+this.id+"'>"
+										+ this.name + "</option>";
+
+								$("#rightSelect").append(option);
+
+							});
+				}
+
+			},
+			"error" : function(xmlHttpRequest) {
+
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+
+	function updateStudent() {
+
+		var stuName = $("#stuName").val();
+		var stuAge = $("#stuAge").val();
+		var stuGender = $("input[name='stuGender']:checked").val();
+		var stuClassId = $("#stuClass").val();
+
+		var stuId = getUrlParamValue(window.location.search, "stuId");
+
+		var teacherIds = [];
+
+		$("#rightSelect option").each(function() {
+			teacherIds.push($(this).attr("value"));
+		});
+
+		var data = {
+			"name" : stuName,
+			"age" : stuAge,
+			//"gender":stuGender,
+			"id" : stuId,
+			"myClass" : {
+				"id" : stuClassId
+			},
+			"teacherIds" : teacherIds
+		};
+
+		// 		alert(JSON.stringify(data));
+
+		$.ajax({
+			"url" : "/test/"+stuId+"/student",
+			"type" : "post",
+			"data" : JSON.stringify(data),
+			"contentType" : "application/json",
+			"success" : function(result) {
+				alert("修改成功");
+				forwardMain();
+			},
+			"error" : function(xmlHttpRequest) {
+
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+
+	function addStudent() {
+
+		var stuName = $("#stuName").val();
+		var stuAge = $("#stuAge").val();
+		var stuGender = $("input[name='stuGender']:checked").val();
+		var stuClassId = $("#stuClass").val();
+		var teacherIds = [];
+
+		$("#rightSelect option").each(function() {
+			teacherIds.push($(this).attr("value"));
+		});
+
+		var data = {
+			"name" : stuName,
+			"age" : stuAge,
+			"gender" : stuGender,
+			"myClass" : {
+				"id" : stuClassId
+			},
+			"teacherIds" : teacherIds
+		};
+
+		// 		alert(JSON.stringify(data));
+
+		$.ajax({
+			"url" : "/test/student",
+			"type" : "post",
+			// 			"data": JSON.stringify(data),//stuName=zdx&stuAge=11&stuGender=false&stuClass=stuName=zdx&stuAge=11&stuGender=false&stuClass=
+			"data" : JSON.stringify(data),//stuName=zdx&stuAge=11&stuGender=false&stuClass=stuName=zdx&stuAge=11&stuGender=false&stuClass=
+			"contentType" : "application/json",
+			"success" : function(result) {
+				alert("添加成功");
+				forwardMain();
+			},
+			"error" : function(xmlHttpRequest) {
+
+				alert(JSON.parse(xmlHttpRequest.responseText).errorMsg);
+			}
+		});
+	}
+
+	function findClasses() {
+
+		$.ajax({
+			"url" : "/test//myClass/all",
+			"type" : "get",
+			"async" : false,//默认：true 异步。 
+			"success" : function(result) {
+
+				var content = result;
+
+				$(content).each(
+						function() {
+
+							var option = "<option value='"+this.id+"'>"
+									+ this.name + "</option>";
+
+							$("#stuClass").append(option);
+
+						});
+
+				// 				findStudent();
+			}
+		});
+	}
+
+	function findTeachers() {
+
+		$.ajax({
+			"url" : "/test/teacher/all",
+			"type" : "get",
+			"async" : false,//默认：true 异步。 
+			"success" : function(result) {
+
+				var content = result;
+
+				$(content).each(
+						function() {
+
+							var option = "<option value='"+this.id+"'>"
+									+ this.name + "</option>";
+
+							$("#leftSelect").append(option);
+
+						});
+			}
+		});
+	}
+</script>
+
+</head>
+<body>
+
+	<h1 id="stuTitle"></h1>
+
+	姓名：
+	<input type="text" id="stuName" />
+	<br> 年龄：
+	<input type="text" id="stuAge" value="11" />
+	<br> 性别：
+	<input type="radio" name="stuGender" value="false" checked />男
+	<input type="radio" value="true" name="stuGender" />女
+	<br> 班级：
+	<select id="stuClass">
+		<option value="">-请选择-</option>
+	</select>
+
+	<br> 老师：
+	<table id="table-a">
+		<tr>
+			<td><select id="leftSelect" multiple="multiple"
+				style="height: 100px; width: 100px;">
+			</select></td>
+			<td>
+				<li style="list-style: none"><input type="button" id="right"
+					value=">" /></li>
+				<li style="list-style: none"><input type="button" id="left"
+					value="<" /></li>
+			</td>
+			<td><select id="rightSelect" multiple="multiple"
+				style="height: 100px; width: 100px;"></select></td>
+		</tr>
+
+	</table>
+	<br>
+
+	<button id="stuSubmit" onclick="submit()">提交</button>
+	<button id="stuSubmit" onclick="forwardMain()">返回</button>
+</body>
+</html>
