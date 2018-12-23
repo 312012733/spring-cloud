@@ -2,9 +2,9 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  servlet:
-    multipart:
-      location: /home/java/upload     
+#  servlet:
+#    multipart:
+#      location: /home/java/upload     
      
       
 mybatis:

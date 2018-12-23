@@ -2,10 +2,7 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  servlet:
-    multipart:
-      location: E:\upload
-  jpa:
+  jpa: 
     database: MYSQL
     hibernate: 
       ddl-auto: update

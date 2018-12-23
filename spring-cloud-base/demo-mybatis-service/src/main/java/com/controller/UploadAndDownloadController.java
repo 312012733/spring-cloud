@@ -50,11 +50,18 @@ public class UploadAndDownloadController
             Iterator<String> formFileNames = requst.getFileNames();
             
             File uploadDir = ResourceUtils.getFile(configBean.getUploadDir());
-            // String destFileDir =
-            // requst.getServletContext().getRealPath("upload");
+            
+            if (!uploadDir.exists())
+            {
+                uploadDir.mkdirs();
+            }
+            else if (!uploadDir.isDirectory())
+            {
+                throw new SecurityException("upload dir is error. " + uploadDir.getCanonicalPath());
+            }
             
             // TODO 验证目录
-            LOG.info("【uploadDir:】" + uploadDir);
+            LOG.info("【uploadDir:】" + uploadDir.getCanonicalPath());
             
             while (formFileNames.hasNext())
             {
@@ -64,7 +71,8 @@ public class UploadAndDownloadController
                 
                 for (MultipartFile file : files)
                 {
-                    file.transferTo(new File(uploadDir, file.getOriginalFilename()));
+                    String newFile = uploadDir.getCanonicalPath() + File.separator + file.getOriginalFilename();
+                    file.transferTo(new File(newFile));
                 }
             }
             
