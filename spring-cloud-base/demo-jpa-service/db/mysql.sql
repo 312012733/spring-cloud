@@ -111,10 +111,7 @@ CREATE TABLE `t_teacher` (
 -- ----------------------------
 -- Records of t_teacher
 -- ----------------------------
-INSERT INTO `t_teacher` VALUES ('1', '张老师');
-INSERT INTO `t_teacher` VALUES ('2', '李老师');
-INSERT INTO `t_teacher` VALUES ('3', '王老师');
-INSERT INTO `t_teacher` VALUES ('4', '赵老师');
+
 
 -- ----------------------------
 -- Table structure for t_user
@@ -127,6 +124,11 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`pk_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+
+INSERT INTO `t_teacher` VALUES ('1', '张老师');
+INSERT INTO `t_teacher` VALUES ('2', '李老师');
+INSERT INTO `t_teacher` VALUES ('3', '王老师');
+INSERT INTO `t_teacher` VALUES ('4', '赵老师');
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
