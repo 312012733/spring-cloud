@@ -23,8 +23,8 @@ service:
     driverClass: com.mysql.jdbc.Driver
     user: root
     password: root
-    minPoolSize: 20
-    maxPoolSize: 30
+    minPoolSize: 5
+    maxPoolSize: 20
     
 debug: 
   false
