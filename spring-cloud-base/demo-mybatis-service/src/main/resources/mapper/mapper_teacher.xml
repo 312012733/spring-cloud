@@ -50,7 +50,7 @@
 	<select id="findTeacherIdsByTeacherIds" resultType="string">
 		SELECT t.pk_teacher_id FROM t_teacher t where t.pk_teacher_id in
 
-		<foreach collection="array" open="(" close=")" item="teacherId"
+		<foreach collection="list" open="(" close=")" item="teacherId"
 			separator=",">
 			#{teacherId}
 		</foreach>
