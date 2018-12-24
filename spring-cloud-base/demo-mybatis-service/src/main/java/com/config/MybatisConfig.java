@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan(basePackages =
-{ "com.dao", "com.dao2" })
+{ "com.dao" })
 public class MybatisConfig
 {
     
