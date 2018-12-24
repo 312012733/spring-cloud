@@ -1,17 +1,23 @@
-package com.vo;
+package com.form;
 
-public class UserDTO
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "登录表单")
+public class UserForm
 {
+    @ApiModelProperty(value = "验证码", example = "abcd")
     private String checkCode;
+    @ApiModelProperty(value = "用户名", example = "admin")
     private String username;
+    @ApiModelProperty(value = "密码", example = "1234")
     private String password;
-    private UserDTO temp;
     
-    public UserDTO()
+    public UserForm()
     {
     }
     
-    public UserDTO(String checkCode, String username, String password)
+    public UserForm(String checkCode, String username, String password)
     {
         this.checkCode = checkCode;
         this.username = username;
@@ -46,16 +52,6 @@ public class UserDTO
     public void setPassword(String password)
     {
         this.password = password;
-    }
-    
-    public UserDTO getTemp()
-    {
-        return temp;
-    }
-    
-    public void setTemp(UserDTO temp)
-    {
-        this.temp = temp;
     }
     
     @Override

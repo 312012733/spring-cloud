@@ -28,11 +28,6 @@ public class StudentDTO
     {
     }
     
-    public Student buildStuCondition()
-    {
-        return new Student(null, name, age, gender, myClass);
-    }
-    
     public List<String> getTeacherIds()
     {
         return teacherIds;

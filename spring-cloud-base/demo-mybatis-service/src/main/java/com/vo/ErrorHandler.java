@@ -1,7 +1,12 @@
 package com.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("失败消息")
 public class ErrorHandler
 {
+    @ApiModelProperty("失败原因")
     private String errorMsg;
     
     public ErrorHandler()

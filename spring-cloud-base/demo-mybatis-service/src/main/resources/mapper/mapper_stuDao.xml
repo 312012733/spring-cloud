@@ -62,6 +62,10 @@
 			<if test="param2.gender != null">
 				and s.gender = #{param2.gender}
 			</if>
+			
+			<if test="param2.myClass.name != null and param2.myClass.name.length() > 0">
+				and b.class_name like '%' #{param2.myClass.name} '%'
+			</if>
 		</if>
 
 		order by s.create_time desc limit #{param1.offset} , #{param1.pageSize}

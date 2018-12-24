@@ -3,8 +3,6 @@ package com.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,25 +11,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bean.MyClass;
-import com.bean.Student;
 import com.service.IMyClassService;
 import com.vo.ErrorHandler;
-import com.vo.Page;
-import com.vo.StudentDTO;
 
-//@Controller
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@Api(tags = "班级")
 @RestController
 public class MyClassController
 {
     @Autowired
     private IMyClassService myClassService;
     
+    @ApiOperation(value = "查询所有班级", responseContainer = "List", response = MyClass.class)
+    @ApiResponses(value =
+    { @ApiResponse(code = 400, message = "失败", response = ErrorHandler.class) })
     @RequestMapping(value = "/myClass/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    // @ResponseBody
-    public ResponseEntity<Object> findClasses(StudentDTO stuDTO, Page<Student> page, HttpServletResponse response)
-            throws IOException
+    public ResponseEntity<Object> findClasses() throws IOException
     {
-        
         try
         {
             List<MyClass> classList = myClassService.findMyClasses();

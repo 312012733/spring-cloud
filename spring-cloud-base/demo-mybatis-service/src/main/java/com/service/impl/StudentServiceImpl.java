@@ -9,22 +9,27 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.bean.MyClass;
 import com.bean.Student;
 import com.bean.StudentIdCard;
 import com.bean.Teacher;
+import com.dao.IMyClassDao;
 import com.dao.IStudentAndTeacherDao;
 import com.dao.IStudentDao;
 import com.dao.IStudentIdCardDao;
 import com.dao.ITeacherDao;
+import com.form.StudentAddOrUpdateForm;
 import com.service.IStudentService;
-//import com.vo.Page;
 import com.vo.StudentDTO;
 
 @Service
 public class StudentServiceImpl implements IStudentService
 {
     
+    @Autowired
+    private IMyClassDao myClassDao;
     @Autowired
     private IStudentDao stuDao;
     
@@ -39,7 +44,7 @@ public class StudentServiceImpl implements IStudentService
     
     @Transactional
     @Override
-    public void addStudent(StudentDTO stuDTO)
+    public void addStudent(StudentAddOrUpdateForm stuDTO)
     {
         Student stu = new Student();
         
@@ -50,7 +55,9 @@ public class StudentServiceImpl implements IStudentService
         stu.setAge(stuDTO.getAge());
         stu.setName(stuDTO.getName());
         stu.setGender(stuDTO.getGender());
-        stu.setMyClass(stuDTO.getMyClass());
+        
+        // 处理班级的关系
+        addStuAndMyclass(stuDTO, stu);
         
         // 处理老师的关系
         addStuAndTeacher(stuDTO.getTeacherIds(), stu.getId(), teacherDao, stuAndteacherDao);
@@ -58,10 +65,30 @@ public class StudentServiceImpl implements IStudentService
         stuDao.addStudent(stu);
     }
     
+    private void addStuAndMyclass(StudentAddOrUpdateForm stuDTO, Student stu)
+    {
+        String classId = stuDTO.getMyClassId();
+        
+        if (!StringUtils.isEmpty(classId))
+        {
+            MyClass myClass = myClassDao.findMyClassById(classId);
+            
+            if (null == myClass)
+            {
+                throw new SecurityException("myClass id is error. " + classId);
+            }
+            
+            stu.setMyClass(myClass);
+        }
+        else
+        {
+            stu.setMyClass(null);
+        }
+    }
+    
     @Override
     public StudentDTO findStudentById(String stuId)
     {
-        
         Student stu = stuDao.findStudentById(stuId);
         
         if (stu == null)
@@ -86,7 +113,7 @@ public class StudentServiceImpl implements IStudentService
     
     @Transactional
     @Override
-    public void updateStudent(StudentDTO stuDTO)
+    public void updateStudent(StudentAddOrUpdateForm stuDTO)
     {
         String stuId = stuDTO.getId();
         
@@ -100,10 +127,11 @@ public class StudentServiceImpl implements IStudentService
         dbStu.setAge(stuDTO.getAge());
         dbStu.setName(stuDTO.getName());
         dbStu.setLastModifyTime(System.currentTimeMillis());
-        dbStu.setMyClass(stuDTO.getMyClass());
         
-        // TODO处理老师的关系
-        // 先清除 在添加
+        // 处理班级的关系
+        addStuAndMyclass(stuDTO, dbStu);
+        
+        // 处理老师的关系 , 先清除 在添加
         stuAndteacherDao.deleteByStudentId(dbStu.getId());
         this.addStuAndTeacher(stuDTO.getTeacherIds(), stuId, teacherDao, stuAndteacherDao);
         

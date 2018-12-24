@@ -16,10 +16,10 @@
 	</resultMap>
 
 
-<!-- 	<select id="findMyClassById" resultMap="resultMap_class"> -->
-<!-- 		select * from t_class b -->
-<!-- 		where 1 = 1 and b.pk_class_id = #{param2} and b.class_name = #{param1} -->
-<!-- 	</select> -->
+	<select id="findMyClassById" resultMap="resultMap_class">
+		select * from t_class b
+		where 1 = 1 and b.pk_class_id = #{param1} 
+	</select>
 	
 	<select id="findMyClasses" resultMap="resultMap_class">
 		select * from t_class b

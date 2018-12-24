@@ -4,18 +4,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.bean.Student;
+import com.form.StudentAddOrUpdateForm;
 import com.vo.StudentDTO;
 
 public interface IStudentService
 {
     
-    void addStudent(StudentDTO stuDTO);
+    void addStudent(StudentAddOrUpdateForm stuDTO);
     
     Page<Student> findStudentsByPage(Pageable pageable, Student condition);
     
     StudentDTO findStudentById(String stuId);
     
-    void updateStudent(StudentDTO stuDTO);
+    void updateStudent(StudentAddOrUpdateForm stuDTO);
     
     void delStudent(String stuId);
     
