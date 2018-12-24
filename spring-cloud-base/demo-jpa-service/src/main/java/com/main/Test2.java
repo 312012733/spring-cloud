@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.bean2.User;
+import com.bean.User;
 
 /**
  * SELECT * from stu s where 1 = 1 and s.`name` like '%a%' and s.age = 18

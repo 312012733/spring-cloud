@@ -11,7 +11,7 @@ public interface IStudentService
     
     void addStudent(StudentDTO stuDTO);
     
-    Page<Student> findStudentsByPage(Pageable page, Student condition);
+    Page<Student> findStudentsByPage(Pageable pageable, Student condition);
     
     StudentDTO findStudentById(String stuId);
     

@@ -1,6 +1,6 @@
 package com.service;
 
-import com.bean2.User;
+import com.bean.User;
 
 public interface IUserService
 {

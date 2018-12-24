@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bean2.User;
+import com.bean.User;
 import com.service.IUserService;
 import com.utils.GeneratCheckCodeUtils;
 import com.utils.GeneratCheckCodeUtils.CheckCodeCallBack;

@@ -4,22 +4,22 @@ public class Test
 {
     String name;
     
-    
     public Test(String name)
     {
         this.name = name;
     }
-
-    public synchronized void m1(Test t) {
-        System.out.println(name+"--------m1  invoke-----------");
+    
+    public synchronized void m1(Test t)
+    {
+        System.out.println(name + "--------m1  invoke-----------");
         
         t.m2();
     }
     
-    public synchronized void m2() {
-        System.out.println(name+"--------m2  invoke-----------");
+    public synchronized void m2()
+    {
+        System.out.println(name + "--------m2  invoke-----------");
     }
-    
     
     public static void main(String[] args) throws Exception
     {
@@ -51,7 +51,6 @@ public class Test
                 System.out.println("t2 over");
             }
         };
-        
         
         t1.start();
         t2.start();

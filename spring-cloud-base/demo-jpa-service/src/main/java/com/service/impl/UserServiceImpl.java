@@ -3,7 +3,7 @@ package com.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bean2.User;
+import com.bean.User;
 import com.repository.IUserRepository;
 import com.service.IUserService;
 
