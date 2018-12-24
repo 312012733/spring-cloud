@@ -8,10 +8,9 @@ spring:
      
       
 mybatis:
-  mapper-locations:
-  - classpath:mapper1/*.xml
-  - classpath:mapper2/*.xml
-  configuration:
+  mapper-locations: 
+  - classpath:mapper1/*.xml 
+  configuration: 
     cache-enabled: true
   
     

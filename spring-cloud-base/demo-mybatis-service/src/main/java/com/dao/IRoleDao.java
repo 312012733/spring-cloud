@@ -1,4 +1,4 @@
-package com.dao2;
+package com.dao;
 
 import com.bean.Role;
 

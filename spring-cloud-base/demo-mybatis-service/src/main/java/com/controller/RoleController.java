@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bean.Role;
-import com.dao2.IRoleDao;
+import com.dao.IRoleDao;
 import com.vo.ErrorHandler;
 
 @Controller

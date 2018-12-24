@@ -19,12 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bean.Student;
-import com.config.ConfigBean;
 import com.service.IStudentService;
 import com.vo.ErrorHandler;
-//import com.vo.Page;
 import com.vo.StudentDTO;
 
 //@Controller
@@ -34,24 +31,19 @@ public class StudentController
     private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
     
     @Autowired
-    private ConfigBean configBean;
-    
-    @Autowired
     private IStudentService stuService;
     
     @RequestMapping(value = "/student/page", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     // @ResponseBody
     public ResponseEntity<Object> findByPage(StudentDTO stuDTO,
-            @PageableDefault(page = 0, size = 5, direction = Direction.DESC, sort = "createTime") Pageable pageable,
-            HttpServletResponse response) throws IOException
+            @PageableDefault(page = 0, size = 5, direction = Direction.DESC, sort = "createTime") Pageable pageable)
+            throws IOException
     {
         
         try
         {
-            LOG.info("============StudentController.findByPage============================configBean:"
-                    + JSONObject.toJSONString(configBean, true));
-            
-            Page<Student> pageResult = stuService.findStudentsByPage(pageable, stuDTO.buildStuCondition());
+            Student condition = stuDTO.buildStuCondition();
+            Page<Student> pageResult = stuService.findStudentsByPage(pageable, condition);
             
             return new ResponseEntity<>(pageResult, HttpStatus.OK);
         }
