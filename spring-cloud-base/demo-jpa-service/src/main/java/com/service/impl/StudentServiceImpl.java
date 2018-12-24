@@ -24,6 +24,7 @@ import com.bean.MyClass;
 import com.bean.Student;
 import com.bean.StudentIdCard;
 import com.bean.Teacher;
+import com.form.StudentAddOrUpdateForm;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.repository.IMyClassRepository;
@@ -114,7 +115,7 @@ public class StudentServiceImpl implements IStudentService
     
     @Transactional
     @Override
-    public void addStudent(StudentDTO stuDTO)
+    public void addStudent(StudentAddOrUpdateForm stuForm)
     {
         Student stu = new Student();
         
@@ -122,28 +123,28 @@ public class StudentServiceImpl implements IStudentService
         stu.setCreateTime(System.currentTimeMillis());
         stu.setLastModifyTime(stu.getCreateTime());
         
-        stu.setAge(stuDTO.getAge());
-        stu.setName(stuDTO.getName());
-        stu.setGender(stuDTO.getGender());
+        stu.setAge(stuForm.getAge());
+        stu.setName(stuForm.getName());
+        stu.setGender(stuForm.getGender());
         
         // 处理班级的关系
-        if (null != stuDTO.getMyClass() && !StringUtils.isEmpty(stuDTO.getMyClass().getId()))
+        if (!StringUtils.isEmpty(stuForm.getMyClassId()))
         {
-            MyClass myClass = classRepository.findById(stuDTO.getMyClass().getId()).orElse(null);
+            MyClass myClass = classRepository.findById(stuForm.getMyClassId()).orElse(null);
             if (null == myClass)
             {
-                throw new SecurityException("class id is error. class id is " + stuDTO.getMyClass().getId());
+                throw new SecurityException("class id is error. class id is " + stuForm.getMyClassId());
             }
             
             stu.setMyClass(myClass);
         }
         
         // 处理老师的关系
-        if (null != stuDTO.getTeacherIds() && !stuDTO.getTeacherIds().isEmpty())
+        if (null != stuForm.getTeacherIds() && !stuForm.getTeacherIds().isEmpty())
         {
-            List<Teacher> teachers = teacherRepository.findAllById(stuDTO.getTeacherIds());
+            List<Teacher> teachers = teacherRepository.findAllById(stuForm.getTeacherIds());
             
-            if (stuDTO.getTeacherIds().size() != teachers.size())
+            if (stuForm.getTeacherIds().size() != teachers.size())
             {
                 throw new SecurityException("teacher ids is error. ");
             }
@@ -182,9 +183,9 @@ public class StudentServiceImpl implements IStudentService
     
     @Transactional
     @Override
-    public void updateStudent(StudentDTO stuDTO)
+    public void updateStudent(StudentAddOrUpdateForm stuForm)
     {
-        String stuId = stuDTO.getId();
+        String stuId = stuForm.getId();
         
         Student dbStu = stuRepository.findById(stuId).orElse(null);
         
@@ -193,21 +194,21 @@ public class StudentServiceImpl implements IStudentService
             throw new SecurityException("update stu error. stuId is not found. stuId:" + stuId);
         }
         
-        dbStu.setAge(stuDTO.getAge());
-        dbStu.setName(stuDTO.getName());
+        dbStu.setAge(stuForm.getAge());
+        dbStu.setName(stuForm.getName());
         dbStu.setLastModifyTime(System.currentTimeMillis());
         
         // 处理班級的关系
         
         MyClass myClass = null;
         
-        if (null != stuDTO.getMyClass() && !StringUtils.isEmpty(stuDTO.getMyClass().getId()))
+        if (!StringUtils.isEmpty(stuForm.getMyClassId()))
         {
-            myClass = classRepository.findById(stuDTO.getMyClass().getId()).orElse(null);
+            myClass = classRepository.findById(stuForm.getMyClassId()).orElse(null);
             
             if (null == myClass)
             {
-                throw new SecurityException("class id is error. class id is " + stuDTO.getMyClass().getId());
+                throw new SecurityException("class id is error. class id is " + stuForm.getMyClassId());
             }
             
             dbStu.setMyClass(myClass);
@@ -218,11 +219,11 @@ public class StudentServiceImpl implements IStudentService
         }
         
         // 处理老师的关系
-        if (null != stuDTO.getTeacherIds() && !stuDTO.getTeacherIds().isEmpty())
+        if (null != stuForm.getTeacherIds() && !stuForm.getTeacherIds().isEmpty())
         {
-            List<Teacher> teachers = teacherRepository.findAllById(stuDTO.getTeacherIds());
+            List<Teacher> teachers = teacherRepository.findAllById(stuForm.getTeacherIds());
             
-            if (stuDTO.getTeacherIds().size() != teachers.size())
+            if (stuForm.getTeacherIds().size() != teachers.size())
             {
                 throw new SecurityException("teacher ids is error. ");
             }

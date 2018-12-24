@@ -3,7 +3,6 @@ package com.vo;
 import java.util.List;
 
 import com.bean.MyClass;
-import com.bean.Student;
 import com.bean.Teacher;
 
 public class StudentDTO
@@ -26,11 +25,6 @@ public class StudentDTO
     
     public StudentDTO()
     {
-    }
-    
-    public Student buildStuCondition()
-    {
-        return new Student(null, name, age, gender, myClass);
     }
     
     public List<String> getTeacherIds()

@@ -23,12 +23,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bean.User;
+import com.form.UserForm;
 import com.service.IUserService;
 import com.utils.GeneratCheckCodeUtils;
 import com.utils.GeneratCheckCodeUtils.CheckCodeCallBack;
 import com.vo.ErrorHandler;
-import com.vo.UserDTO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@Api(tags = "用户")
 @Controller
 @ControllerAdvice
 public class UserController
@@ -53,16 +59,19 @@ public class UserController
         return new ResponseEntity<Object>(new ErrorHandler(e.getMessage()), headers, HttpStatus.BAD_REQUEST);
     }
     
+    @ApiOperation(value = "用户登录")
     @RequestMapping(path = "/user/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json;charset=utf-8")
+    @ApiResponses(value =
+    { @ApiResponse(code = 400, message = "失败", response = ErrorHandler.class) })
     @ResponseBody
-    public ResponseEntity<Object> login(@RequestBody UserDTO userParam, HttpServletResponse resp,
+    public ResponseEntity<Object> login(@RequestBody UserForm userForm, HttpServletResponse resp,
             HttpServletRequest req)
     {
         try
         {
-            String checkCode = userParam.getCheckCode();
-            String userName = userParam.getUsername();
-            String password = userParam.getPassword();
+            String checkCode = userForm.getCheckCode();
+            String userName = userForm.getUsername();
+            String password = userForm.getPassword();
             
             // 验证参数
             // TODO 空判定。。。。。
@@ -98,9 +107,12 @@ public class UserController
         }
     }
     
+    @ApiOperation(value = "获取验证码", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @RequestMapping(value = "/user/generatCheckCode", method = RequestMethod.GET)
     public void generatCheckCode(HttpServletResponse resp, HttpServletRequest req) throws IOException
     {
+        resp.setHeader("Cache-Control", "no-store, no-cache");
+        resp.setContentType(MediaType.IMAGE_JPEG_VALUE);
         
         GeneratCheckCodeUtils.generatCheckCode(resp.getOutputStream(), new CheckCodeCallBack()
         {
