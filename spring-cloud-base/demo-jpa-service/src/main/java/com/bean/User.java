@@ -1,4 +1,4 @@
-package com.bean2;
+package com.bean;
 
 import javax.management.relation.Role;
 import javax.persistence.Column;

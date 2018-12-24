@@ -41,8 +41,9 @@ public class StudentController
     
     @RequestMapping(value = "/student/page", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     // @ResponseBody
-    public ResponseEntity<Object> findByPage(StudentDTO stuDTO, @PageableDefault(page = 0, size = 5, direction = Direction.DESC, sort = "createTime") Pageable pageable, HttpServletResponse response)
-            throws IOException
+    public ResponseEntity<Object> findByPage(StudentDTO stuDTO,
+            @PageableDefault(page = 0, size = 5, direction = Direction.DESC, sort = "createTime") Pageable pageable,
+            HttpServletResponse response) throws IOException
     {
         
         try
