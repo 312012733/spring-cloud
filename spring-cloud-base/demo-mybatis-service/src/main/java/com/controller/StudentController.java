@@ -42,7 +42,7 @@ public class StudentController
     
     @ApiOperation(value = "查询学生分页列表", response = org.springframework.data.domain.Page.class)
     @ApiImplicitParams(value =
-    { @ApiImplicitParam(value = "当前第几页（默认：重0开始）", name = "pageNumber", dataType = "int", paramType = "query",  required = false),
+    { @ApiImplicitParam(value = "当前第几页（默认：重0开始）", name = "pageNumber", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(value = "每页显示多少条（默认：5）", name = "pageSize", dataType = "int", paramType = "query", required = false),
             @ApiImplicitParam(value = "名字", name = "name", dataType = "String", paramType = "query", required = false),
             @ApiImplicitParam(value = "年龄", name = "age", dataType = "int", paramType = "query", required = false),

@@ -8,5 +8,5 @@ public interface IMyClassDao
 {
     List<MyClass> findMyClasses();
     
-     MyClass findMyClassById(String classId);
+    MyClass findMyClassById(String classId);
 }

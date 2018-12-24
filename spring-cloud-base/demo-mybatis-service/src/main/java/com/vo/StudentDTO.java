@@ -3,7 +3,6 @@ package com.vo;
 import java.util.List;
 
 import com.bean.MyClass;
-import com.bean.Student;
 import com.bean.Teacher;
 
 public class StudentDTO
