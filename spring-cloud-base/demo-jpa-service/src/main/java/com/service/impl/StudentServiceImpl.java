@@ -1,27 +1,36 @@
 package com.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.bean.MyClass;
 import com.bean.Student;
 import com.bean.StudentIdCard;
 import com.bean.Teacher;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.repository.IMyClassRepository;
 import com.repository.IStudentIdCardRepository;
 import com.repository.IStudentRepository;
 import com.repository.ITeacherRepository;
 import com.service.IStudentService;
-import com.utils.HibernateUtils;
 import com.vo.StudentDTO;
 
 @Service
@@ -40,8 +49,68 @@ public class StudentServiceImpl implements IStudentService
     @Autowired
     private IStudentIdCardRepository idCardRepository;
     
-    @Autowired
-    HibernateUtils hibernateUtils;
+    // @Autowired
+    // private HibernateUtils hibernateUtils;
+    
+    static class StudentSpecification implements Specification<Student>
+    {
+        private static final long serialVersionUID = -1001469100819522717L;
+        
+        private Student stuCondition;
+        
+        StudentSpecification(Student stuCondition)
+        {
+            Assert.notNull(stuCondition, "stuCondition must not be null!");
+            this.stuCondition = stuCondition;
+        }
+        
+        @Override
+        public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder)
+        {
+            List<Predicate> predicates = Lists.newArrayList();
+            
+            if (!StringUtils.isEmpty(stuCondition.getName()))
+            {
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + stuCondition.getName() + "%"));
+            }
+            
+            if (null != stuCondition.getAge())
+            {
+                predicates.add(criteriaBuilder.equal(root.get("age"), stuCondition.getAge()));
+            }
+            
+            if (null != stuCondition.getGender())
+            {
+                predicates.add(criteriaBuilder.equal(root.get("gender"), stuCondition.getGender()));
+            }
+            
+            if (null != stuCondition.getMyClass() && !StringUtils.isEmpty(stuCondition.getMyClass().getName()))
+            {
+                predicates.add(criteriaBuilder.like(root.get("myClass").get("name"),
+                        "%" + stuCondition.getMyClass().getName() + "%"));
+            }
+            
+            return predicates.isEmpty() ? criteriaBuilder.conjunction()
+                    : criteriaBuilder.and(Iterables.toArray(predicates, Predicate.class));
+        }
+        
+    }
+    
+    @Override
+    public Page<Student> findStudentsByPage(Pageable pageable, Student condition)
+    {
+        ExampleMatcher matcher = ExampleMatcher.matchingAll().withIgnorePaths("id", "teachers")
+                .withMatcher("name", GenericPropertyMatchers.contains())
+                .withMatcher("myClass.name", GenericPropertyMatchers.contains());
+        Example<Student> stuExample = Example.of(condition, matcher);
+        
+        Page<Student> pageResult = stuRepository.findAll(stuExample, null, pageable);
+        
+        // Page<Student> pageResult = stuRepository.findAll(new
+        // StudentSpecification(stuCondition), pageable);
+        
+        return pageResult;
+    }
     
     @Transactional
     @Override
@@ -226,23 +295,6 @@ public class StudentServiceImpl implements IStudentService
         }
     }
     
-    @Override
-    public Page<Student> findStudentsByPage(Pageable pageable, Student condition)
-    {
-        // Page<Student> stuPage = stuRepository.findAll(pageable);
-        
-        Map<String, Object> conditionMap = new HashMap<>();
-        
-        String conditionSql = buildPageCondition(condition, conditionMap);
-        
-        String listSql = "SELECT * from t_student s " + "where 1 =1 " + conditionSql + "order by s.create_time desc";
-        String countSql = "SELECT count(*) from t_student s where 1 = 1 " + conditionSql;
-        
-        Page<Student> stuPage = hibernateUtils.findByPage(listSql, countSql, pageable, conditionMap, Student.class);
-        
-        return stuPage;
-    }
-    
     @Transactional
     @Override
     public void bindStuIdcard(String stuId)
@@ -309,35 +361,55 @@ public class StudentServiceImpl implements IStudentService
         return idcard;
     }
     
-    private String buildPageCondition(Student condition, Map<String, Object> conditionMap)
-    {
-        StringBuilder conditionSql = new StringBuilder();
-        
-        if (null == condition)
-        {
-            return "";
-        }
-        
-        if (null != condition.getName() && condition.getName().length() > 0)
-        {
-            conditionSql.append("and s.student_name like :name ");
-            conditionMap.put("name", "%" + condition.getName() + "%");
-        }
-        
-        if (null != condition.getAge())
-        {
-            conditionSql.append("and s.age = :age ");
-            conditionMap.put("age", condition.getAge());
-            
-        }
-        
-        if (null != condition.getGender())
-        {
-            conditionSql.append("and s.gender = :gender ");
-            conditionMap.put("gender", condition.getGender());
-        }
-        
-        return conditionSql.toString();
-    }
+    // @Override
+    // public Page<Student> findStudentsByPage(Pageable pageable, Student
+    // condition)
+    // {
+    // Map<String, Object> conditionMap = new HashMap<>();
+    //
+    // String conditionSql = buildPageCondition(condition, conditionMap);
+    //
+    // String listSql = "SELECT * from t_student s " + "where 1 =1 " +
+    // conditionSql + "order by s.create_time desc";
+    // String countSql = "SELECT count(*) from t_student s where 1 = 1 " +
+    // conditionSql;
+    //
+    // Page<Student> stuPage = hibernateUtils.findByPage(listSql, countSql,
+    // pageable, conditionMap, Student.class);
+    //
+    // return stuPage;
+    // }
+    //
+    // private String buildPageCondition(Student condition, Map<String, Object>
+    // conditionMap)
+    // {
+    // StringBuilder conditionSql = new StringBuilder();
+    //
+    // if (null == condition)
+    // {
+    // return "";
+    // }
+    //
+    // if (null != condition.getName() && condition.getName().length() > 0)
+    // {
+    // conditionSql.append("and s.student_name like :name ");
+    // conditionMap.put("name", "%" + condition.getName() + "%");
+    // }
+    //
+    // if (null != condition.getAge())
+    // {
+    // conditionSql.append("and s.age = :age ");
+    // conditionMap.put("age", condition.getAge());
+    //
+    // }
+    //
+    // if (null != condition.getGender())
+    // {
+    // conditionSql.append("and s.gender = :gender ");
+    // conditionMap.put("gender", condition.getGender());
+    // }
+    //
+    // return conditionSql.toString();
+    // }
     
 }
