@@ -26,6 +26,7 @@
 		<guava.version>27.0-jre</guava.version>
 		<swagger.version>2.7.0</swagger.version>
 		<shiro.version>1.4.0</shiro.version>
+		<druid.version>1.1.10</druid.version>
 	</properties>
 
 	<dependencies>
@@ -43,6 +44,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>${druid.version}</version>
 		</dependency>
 
 		<dependency>
@@ -67,10 +74,10 @@
 			<optional>true</optional>
 		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.hibernate</groupId> -->
+		<!-- <artifactId>hibernate-c3p0</artifactId> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.hibernate</groupId>

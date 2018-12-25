@@ -28,7 +28,7 @@
 		<swagger.version>2.7.0</swagger.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<shiro.version>1.4.0</shiro.version>
-
+		<druid.version>1.1.10</druid.version>
 	</properties>
 
 	<dependencies>
@@ -52,6 +52,12 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>${mybatis-spring-boot-starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>${druid.version}</version>
 		</dependency>
 
 		<dependency>
