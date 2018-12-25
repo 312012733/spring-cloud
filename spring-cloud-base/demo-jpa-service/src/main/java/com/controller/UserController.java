@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bean.User;
 import com.form.UserForm;
 import com.google.code.kaptcha.Producer;
+import com.my.common.validator.ValidatorUtils;
 import com.service.IUserService;
 import com.vo.ErrorHandler;
 
@@ -79,8 +80,7 @@ public class UserController
             String userName = userForm.getUsername();
             String password = userForm.getPassword();
             
-            // 验证参数
-            // TODO 空判定。。。。。
+            ValidatorUtils.validateEntity(userForm);
             
             // 验证验证码
             HttpSession session = req.getSession();
@@ -129,7 +129,6 @@ public class UserController
         OutputStream out = resp.getOutputStream();
         ImageIO.write(image, "jpg", out);
         IOUtils.closeQuietly(out);
-        
         
     }
     

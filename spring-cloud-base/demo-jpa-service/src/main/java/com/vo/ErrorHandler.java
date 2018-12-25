@@ -3,10 +3,10 @@ package com.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel("Ê§°ÜÏûÏ¢")
+@ApiModel("å¤±è´¥æ¶ˆæ¯")
 public class ErrorHandler
 {
-    @ApiModelProperty("Ê§°ÜÔ­Òò")
+    @ApiModelProperty("å¤±è´¥åŸå› ")
     private String errorMsg;
     
     public ErrorHandler()
