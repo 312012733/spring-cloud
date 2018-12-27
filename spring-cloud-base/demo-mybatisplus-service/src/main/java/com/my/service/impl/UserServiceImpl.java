@@ -10,12 +10,13 @@ import com.my.service.IUserService;
 @Service
 public class UserServiceImpl extends ServiceImpl<IUserDao, User> implements IUserService
 {
+    // @Autowired
+    // private IUserDao userDao;
     
     @Override
     public User findByUsernameAndPassword(String userName, String password) throws Exception
     {
-        // return userDao.findUserByUsernameAndPassword(userName, password);
-        return this.baseMapper.findUserByUsernameAndPassword(userName, password);
+        return super.baseMapper.findUserByUsernameAndPassword(userName, password);
     }
     
 }

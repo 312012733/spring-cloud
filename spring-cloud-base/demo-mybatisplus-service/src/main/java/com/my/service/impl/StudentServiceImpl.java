@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.my.bean.MyClass;
 import com.my.bean.Student;
 import com.my.bean.StudentIdCard;
@@ -25,13 +26,14 @@ import com.my.service.IStudentService;
 import com.my.vo.StudentDTO;
 
 @Service
-public class StudentServiceImpl implements IStudentService
+public class StudentServiceImpl extends ServiceImpl<IStudentDao, Student> implements IStudentService
 {
+    
+    // @Autowired
+    // private IStudentDao stuDao;
     
     @Autowired
     private IMyClassDao myClassDao;
-    @Autowired
-    private IStudentDao stuDao;
     
     @Autowired
     private ITeacherDao teacherDao;
@@ -62,7 +64,7 @@ public class StudentServiceImpl implements IStudentService
         // 处理老师的关系
         addStuAndTeacher(stuDTO.getTeacherIds(), stu.getId(), teacherDao, stuAndteacherDao);
         
-        stuDao.addStudent(stu);
+        super.baseMapper.addStudent(stu);
     }
     
     private void addStuAndMyclass(StudentAddOrUpdateForm stuDTO, Student stu)
@@ -89,7 +91,7 @@ public class StudentServiceImpl implements IStudentService
     @Override
     public StudentDTO findStudentById(String stuId)
     {
-        Student stu = stuDao.findStudentById(stuId);
+        Student stu = super.baseMapper.findStudentById(stuId);
         
         if (stu == null)
         {
@@ -117,7 +119,7 @@ public class StudentServiceImpl implements IStudentService
     {
         String stuId = stuDTO.getId();
         
-        Student dbStu = stuDao.findStudentById(stuId);
+        Student dbStu = super.baseMapper.findStudentById(stuId);
         
         if (null == dbStu)
         {
@@ -135,7 +137,7 @@ public class StudentServiceImpl implements IStudentService
         stuAndteacherDao.deleteByStudentId(dbStu.getId());
         this.addStuAndTeacher(stuDTO.getTeacherIds(), stuId, teacherDao, stuAndteacherDao);
         
-        stuDao.updateStudent(dbStu);
+        super.baseMapper.updateStudent(dbStu);
     }
     
     @Transactional
@@ -163,14 +165,14 @@ public class StudentServiceImpl implements IStudentService
             delStu(stuId);
         }
         
-        // stuDao.batchDelStudent(ids);
+        // super.baseMapper.batchDelStudent(ids);
     }
     
     @Override
     public Page<Student> findStudentsByPage(Pageable pageable, Student condition)
     {
-        List<Student> stuList = stuDao.findStudentsByPage(pageable, condition);
-        Long totalCount = stuDao.queryCount(condition);
+        List<Student> stuList = super.baseMapper.findStudentsByPage(pageable, condition);
+        Long totalCount = super.baseMapper.queryCount(condition);
         
         PageImpl<Student> pageImpl = new PageImpl<>(stuList, pageable, totalCount);
         
@@ -180,7 +182,7 @@ public class StudentServiceImpl implements IStudentService
     @Override
     public void bindStuIdcard(String stuId)
     {
-        Student stu = stuDao.findStudentById(stuId);
+        Student stu = super.baseMapper.findStudentById(stuId);
         
         // 验证
         
@@ -203,13 +205,13 @@ public class StudentServiceImpl implements IStudentService
         stu.setStudentIdCard(studentIdCard);
         stu.setLastModifyTime(System.currentTimeMillis());
         
-        stuDao.updateStudent(stu);
+        super.baseMapper.updateStudent(stu);
     }
     
     @Override
     public void unBindStuIdcard(String stuId)
     {
-        Student stu = stuDao.findStudentById(stuId);
+        Student stu = super.baseMapper.findStudentById(stuId);
         
         // 验证
         
@@ -231,7 +233,7 @@ public class StudentServiceImpl implements IStudentService
         stu.setStudentIdCard(null);
         stu.setLastModifyTime(System.currentTimeMillis());
         
-        stuDao.updateStudent(stu);
+        super.baseMapper.updateStudent(stu);
         
         // 删除学生证
         idCardDao.delete(idCardId);
@@ -266,7 +268,7 @@ public class StudentServiceImpl implements IStudentService
     
     public void delStu(String stuId)
     {
-        Student dbStu = stuDao.findStudentById(stuId);
+        Student dbStu = super.baseMapper.findStudentById(stuId);
         
         if (null == dbStu)
         {
@@ -301,7 +303,7 @@ public class StudentServiceImpl implements IStudentService
         
         if (isUpdate)
         {
-            stuDao.updateStudent(dbStu);
+            super.baseMapper.updateStudent(dbStu);
         }
         
         // 删除学生证
@@ -311,7 +313,7 @@ public class StudentServiceImpl implements IStudentService
         }
         
         // 删除学生
-        stuDao.delStudent(stuId);
+        super.baseMapper.delStudent(stuId);
     }
     
 }

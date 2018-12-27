@@ -17,6 +17,7 @@ public class User
     
     private String password;
     
+    @TableField(exist = false)
     private Role role;
     
     public User()
