@@ -1,5 +1,7 @@
 package com.my.form;
 
+import org.springframework.util.StringUtils;
+
 import com.my.bean.MyClass;
 import com.my.bean.Student;
 
@@ -28,7 +30,8 @@ public class StudentConditonForm
     
     public Student buildStuCondition()
     {
-        return new Student(null, name, age, gender, new MyClass(null, myClassName));
+        MyClass myClass = StringUtils.isEmpty(myClassName) ? null : new MyClass(null, myClassName);
+        return new Student(null, name, age, gender, myClass);
     }
     
     public String getName()

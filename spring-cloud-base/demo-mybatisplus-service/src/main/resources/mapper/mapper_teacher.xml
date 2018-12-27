@@ -3,17 +3,17 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dao.ITeacherDao">
+<mapper namespace="com.my.dao.ITeacherDao">
 
-	<resultMap type="com.bean.Teacher" id="teacherSimpleResultMap">
+	<resultMap type="com.my.bean.Teacher" id="teacherSimpleResultMap">
 		<id column="pk_teacher_id" property="id" />
 		<result column="teacher_name" property="name" />
 	</resultMap>
 
-	<resultMap type="com.bean.Teacher" id="teacherResultMap"
+	<resultMap type="com.my.bean.Teacher" id="teacherResultMap"
 		extends="teacherSimpleResultMap">
 		<collection property="students"
-			resultMap="com.dao.IStudentDao.stuExcluTeacherResultMap"></collection>
+			resultMap="com.my.dao.IStudentDao.stuExcluTeacherResultMap"></collection>
 	</resultMap>
 
 	<select id="findTeachers" resultMap="teacherResultMap">

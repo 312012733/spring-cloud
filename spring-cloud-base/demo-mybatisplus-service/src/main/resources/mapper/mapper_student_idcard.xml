@@ -4,17 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.dao.IStudentIdCardDao">
+<mapper namespace="com.my.dao.IStudentIdCardDao">
 
 	<!-- <cache readOnly="false" eviction="LRU" size="1024" flushInterval="60000" 
 		></cache> -->
-	<resultMap type="com.bean.StudentIdCard" id="resultMap_simple_student_idcard">
+	<resultMap type="com.my.bean.StudentIdCard" id="resultMap_simple_student_idcard">
 		<id column="pk_student_idcard_id" property="id" />
 		<result column="student_num" property="num" />
 	</resultMap>
 	
 	
-	<resultMap type="com.bean.StudentIdCard" id="resultMap_student_idcard" extends="resultMap_simple_student_idcard">
+	<resultMap type="com.my.bean.StudentIdCard" id="resultMap_student_idcard" extends="resultMap_simple_student_idcard">
 		
 		<association property="student" resultMap="stuSimpleResultMap"></association>
 	</resultMap>
