@@ -63,7 +63,7 @@
 				and s.gender = #{param2.gender}
 			</if>
 			
-			<if test="param2.myClass.name != null and param2.myClass.name.length() > 0">
+			<if test="param2.myClass !=null and param2.myClass.name != null and param2.myClass.name.length() > 0">
 				and b.class_name like '%' #{param2.myClass.name} '%'
 			</if>
 		</if>
