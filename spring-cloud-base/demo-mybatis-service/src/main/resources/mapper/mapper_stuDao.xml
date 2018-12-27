@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dao.IStudentDao">
+<mapper namespace="com.my.dao.IStudentDao">
 
 
-	<resultMap type="com.bean.Student" id="stuSimpleResultMap">
+	<resultMap type="com.my.bean.Student" id="stuSimpleResultMap">
 		<id property="id" column="pk_student_id" />
 		<result property="name" column="student_name" />
 		<result property="age" column="age" />
@@ -15,19 +15,19 @@
 		<result property="lastModifyTime" column="last_modify_time" />
 	</resultMap>
 
-	<resultMap type="com.bean.Student" id="stuResultMap" extends="stuSimpleResultMap">
+	<resultMap type="com.my.bean.Student" id="stuResultMap" extends="stuSimpleResultMap">
 		<association property="studentIdCard"
-			resultMap="com.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
+			resultMap="com.my.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
 		<association property="myClass"
-			resultMap="com.dao.IMyClassDao.resultMap_simple_class"></association>
-		<collection property="teachers" resultMap="com.dao.ITeacherDao.teacherSimpleResultMap"></collection>
+			resultMap="com.my.dao.IMyClassDao.resultMap_simple_class"></association>
+		<collection property="teachers" resultMap="com.my.dao.ITeacherDao.teacherSimpleResultMap"></collection>
 	</resultMap>
 	
-	<resultMap type="com.bean.Student" id="stuExcluTeacherResultMap" extends="stuSimpleResultMap">
+	<resultMap type="com.my.bean.Student" id="stuExcluTeacherResultMap" extends="stuSimpleResultMap">
 		<association property="studentIdCard"
-			resultMap="com.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
+			resultMap="com.my.dao.IStudentIdCardDao.resultMap_simple_student_idcard"></association>
 		<association property="myClass"
-			resultMap="com.dao.IMyClassDao.resultMap_simple_class"></association>
+			resultMap="com.my.dao.IMyClassDao.resultMap_simple_class"></association>
 	</resultMap>
 
 

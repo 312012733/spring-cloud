@@ -144,6 +144,7 @@
 		
 		$.ajax({
 			"url":"/test/idCard/"+stuId+"/binding",
+			"type":"post",
 			"success":function(result){
 				alert("绑定成功");
 				findStudents(0);
@@ -160,6 +161,7 @@
 		
 		$.ajax({
 			"url":"/test/idCard/"+stuId+"/unBinding",
+			"type":"post",
 			"data":{"id":stuId},
 			"success":function(result){
 				alert("绑定成功");

@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dao.IStudentAndTeacherDao">
+<mapper namespace="com.my.dao.IStudentAndTeacherDao">
 
 	<insert id="batchSaveStuAndTeacher">
 		INSERT INTO t_student_teacher ( pk_student_id , pk_teacher_id ) VALUES 
