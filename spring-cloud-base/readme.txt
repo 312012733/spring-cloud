@@ -14,3 +14,4 @@ rabbit-spring-consumer-service   19091---
 
 demo-mybatis-service   19111---
 demo-jpa-service   19121---
+demo-mybatisplus-service   19131---

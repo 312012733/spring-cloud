@@ -34,6 +34,7 @@
 		<module>rabbit-spring-consumer-service</module>
 		<module>demo-mybatis-service</module>
 		<module>demo-jpa-service</module>
+		<module>demo-mybatisplus-service</module>
 	</modules>
 
 	<properties>
