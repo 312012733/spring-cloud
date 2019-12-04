@@ -65,6 +65,7 @@ public class StudentServiceImpl extends ServiceImpl<IStudentDao, Student> implem
         addStuAndTeacher(stuDTO.getTeacherIds(), stu.getId(), teacherDao, stuAndteacherDao);
         
         super.baseMapper.addStudent(stu);
+        
     }
     
     private void addStuAndMyclass(StudentAddOrUpdateForm stuDTO, Student stu)

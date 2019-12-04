@@ -74,7 +74,7 @@ public class RabbitSender implements RabbitTemplate.ConfirmCallback, RabbitTempl
      * @param cause
      */
     @Override
-    public void confirm(org.springframework.amqp.rabbit.support.CorrelationData correlationData, boolean ack,
+    public void confirm(org.springframework.amqp.rabbit.connection.CorrelationData correlationData, boolean ack,
             String cause)
     {
         // 消息回调确认失败处理

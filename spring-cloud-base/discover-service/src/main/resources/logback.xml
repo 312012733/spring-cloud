@@ -6,7 +6,9 @@
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d-[%thread] %-5level - %msg%n</pattern>
+			<pattern>
+				%d-[%-5level]-[%thread] --> %msg -- [%replace(%replace(%caller{1}){'\s', ''}){'Caller\+0at', ''}]%n
+			</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
@@ -28,8 +30,9 @@
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
 		<encoder>
-			<pattern>%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -
-				%msg%n</pattern>
+			<pattern>
+				%d-[%-5level]-[%thread] --> %msg -- [%replace(%replace(%caller{1}){'\s', ''}){'Caller\+0at', ''}]%n
+			</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 	</appender>

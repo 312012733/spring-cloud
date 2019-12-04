@@ -4,7 +4,7 @@ package com.xiaolyuh.mq;
  * 发送消息的相关数据
  * @author yuhao.wang
  */
-public class CorrelationData extends org.springframework.amqp.rabbit.support.CorrelationData {
+public class CorrelationData extends org.springframework.amqp.rabbit.connection.CorrelationData {
 	/**
 	 * 消息体
 	 */
