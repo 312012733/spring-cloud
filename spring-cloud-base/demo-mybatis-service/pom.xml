@@ -29,7 +29,7 @@
 		<guava.version>27.0-jre</guava.version>
 		<swagger.version>2.7.0</swagger.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
-		<shiro.version>1.4.0</shiro.version>
+		<shiro.version>1.8.0</shiro.version>
 		<druid.version>1.1.10</druid.version>
 	</properties>
 
